@@ -1,6 +1,7 @@
 # VineScript
 
-![Logo](http://brandonholmes.net/images/VineScript.png)
+![Logo]
+(http://brandonholmes.net/images/VineScript.png)
 
 ## Introduction
 Welcome to VineScript, the nostalgic script that takes your programs back to the 2012 era. Each expression elicits memories of simpler times.
@@ -17,25 +18,38 @@ Welcome to VineScript, the nostalgic script that takes your programs back to the
 
 ## Examples
 
-
 #### Variable Declarations
-``
+`lookAtThisGraph x = 5`
 
 #### Function Declarations
-``
+```
+whenLifeGiveYouLemons myFunction(param1) {
 
-#### Comments
-``
+}   
+```
 
 #### Arrays
-``
+`lookAtAllThoseChickens`
 
-#### While Loops
-``
+#### DoWhile Loops
+```
+LovinYou {
+
+} iAintGunnaStop()
+```
 
 #### If/Else
 ```
 bitchIhopeTheFuckYouDo(x > 5)
   
-elseImmaSlapTheShitOuttaYou
+orWhat
 ```
+
+### And
+`andIoop`
+
+### True/False
+`iSureHopeItDoes / thatIsNotCorrect`
+
+### Not
+`ADAM true`
