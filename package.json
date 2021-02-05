@@ -1,7 +1,7 @@
 {
-    "name": "chickenlang",
+    "name": "vinescript",
     "version": "1.0.0",
-    "description": "A compiler for a chicken language",
+    "description": "Compiler for VineScript",
     "main": "vinescript.js",
     "type": "module",
     "scripts": {
