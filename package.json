@@ -5,11 +5,13 @@
     "main": "vinescript.js",
     "type": "module",
     "scripts": {
-        "test": "c8 node_modules/.bin/mocha"
+        "test": "c8 node_modules/.bin/mocha",
+        "lint": "eslint ."
     },
     "license": "ISC",
     "devDependencies": {
         "c8": "^7.5.0",
+        "eslint": "^7.19.0",
         "mocha": "^8.2.1"
     },
     "dependencies": {

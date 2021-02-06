@@ -1,0 +1,53 @@
+vinescript  {
+  Program                 = Statement+
+  Statement               = "lookAtThisGraph" id "=" Exp                  --vardec
+                          | id "=" Exp                                    --assign
+                          | print Exp                                     --print
+                          | WhileStatement                                --while
+                          | Exp
+  Exp                     = Exp ("+"|"-") LogExp                          --plusminus
+                          | Exp indecop                                   --increment
+                          | LogExp
+  LogExp                  = LogExp ("andIoop" | "||") MulExp              --logical
+                          | MulExp
+  MulExp                  = MulExp ("*"|"/") InEq                         --timesdivide
+                          | InEq
+  InEq                    = InEq ("<=" | ">=" | "==" | "!=" | "<" | ">") NegExp --equality
+                          | NegExp
+  NegExp                  = "youreNotMyDad"? PriExp                       --negation
+                          | "-" PriExp                                    --negative
+                          | PriExp
+  PriExp                  = "(" Statement ")"                             --paren
+                          | FuncCall
+                          | id
+                          | numlit
+                          | strlit
+                          | Conditional
+                          | truefalse
+
+  WhileStatement          = "iAintGunnaStopLovinYou" "(" Exp ")" Exp+
+  Conditional             = Statement "bitchIhopeTheFuckYouDo" "(" Exp ")" Statement "orWhat" Statement --conditional
+  Function                = "whenLifeGivesYouLemons" id "(" Params ")" Body
+  Params                  = ListOf<id, ",">
+  Body                    = NonemptyListOf<Statement, ";"> "end"
+  FuncCall                = id "(" ListOf<Statement, ","> ")"
+
+  numlit                  = digit+ ("."digit+)? ("^"digit+)?
+  strlit                  = "\"" (~"\""any)* "\""
+  print                   = "print" ~alnum
+  space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
+  indecop 	              =  "++" | "--"
+  
+  truefalse        = iSureHopeItDoes | thatIsNotCorrect
+  lookAtThisGraph  = "lookAtThisGraph"
+  thatIsNotCorrect = "thatIsNotCorrect"
+  whenLifeGiveYouLemons   = "whenLifeGiveYouLemons" ~alnum
+  iSureHopeItDoes  = "iSureHopeItDoes"
+  iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou"
+  youreNotMyDad    = "youreNotMyDad"
+
+  keyword     =  ("boolean" | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
+                 | whenLifeGiveYouLemons | iAintGunnaStopLovinYou | youreNotMyDad) ~idrest
+  id          =  ~keyword letter idrest*
+  idrest      =  "_" | alnum
+}

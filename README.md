@@ -30,11 +30,9 @@ whenLifeGiveYouLemons myFunction(param1) {
 #### Arrays
 `lookAtAllThoseChickens`
 
-#### DoWhile Loops
+#### While Loops
 ```
-LovinYou {
-
-} iAintGunnaStop()
+iAintGunnaStoplovinYou()
 ```
 
 #### If/Else
@@ -51,4 +49,7 @@ orWhat
 `iSureHopeItDoes / thatIsNotCorrect`
 
 ### Not
-`ADAM true`
+`youreNotMyDad true`
+
+### Comments
+`THATSMYOPINION this is a comment`
