@@ -1,7 +1,7 @@
 {
     "name": "vinescript",
     "version": "1.0.0",
-    "author": "Brandon Holmes, Parker Bath, Tyler Ilunga, Seth Cassellius, Amaya Alviz"
+    "author": "Brandon Holmes, Parker Bath, Tyler Ilunga, Seth Cassellius, Amaya Alviz",
     "description": "Compiler for VineScript",
     "main": "vinescript.js",
     "type": "module",
