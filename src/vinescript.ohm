@@ -1,11 +1,20 @@
 vinescript  {
   Program                 = Statement+
-  Statement               = Declaration | Assignment | Print | Exp | WhileLoop                                --while
+  Statement               = Conditional | WhileLoop | Declaration | Assignment | Print |  Exp
+  Declaration             = Function | Variable
+  Function                = whenLifeGivesYouLemons id "(" Params ")" "{" Body "}"
+  Params                  = ListOf<id, ",">
+  Body                    = Statement*
+  Variable                = lookAtThisGraph type id "=" Exp
+  Assignment              = id "=" Exp
+  Print                   = print Exp
+  WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" Statement+
+  Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ "orWhat" Exp
   
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
                           | LogExp
-  LogExp                  = LogExp (andIoop | "||") MulExp              --logical
+  LogExp                  = LogExp (andIoop | "||") MulExp                --logical
                           | MulExp
   MulExp                  = MulExp ("*"|"/") InEq                         --timesdivide
                           | InEq
@@ -22,37 +31,39 @@ vinescript  {
                           | Conditional
                           | truefalse
 
-  Print                   = print Exp
-  Declaration             = lookAtThisGraph Type id "=" Exp
-  Assignment              = id "=" Exp
-  Type                    = "int" | "string" | "boolean" | "double"
-  WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" Exp+
-  Conditional             = Statement bitchIhopeTheFuckYouDo "(" Exp ")" Statement "orWhat" Statement --conditional
-  Function                = whenLifeGivesYouLemons id "(" Params ")" Body
-  Params                  = ListOf<id, ",">
-  Body                    = NonemptyListOf<Statement, ";"> "end"
-  FuncCall                = id "(" ListOf<Statement, ","> ")"
+  
+
+
+  
+
+  FuncCall                = ~keyword id "(" ListOf<Statement, ","> ")"
   
   numlit                  = digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
   print                   = "print" ~alnum
   space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
   indecop 	              =  "++" | "--"
+  type             = int | string | boolean | double
 
-  keyword     =  ("boolean" | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
-                 | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad) ~idrest
-
+  
   truefalse        = iSureHopeItDoes | thatIsNotCorrect
   lookAtThisGraph  = "lookAtThisGraph"
   thatIsNotCorrect = "thatIsNotCorrect"
   bitchIhopeTheFuckYouDo = "bitchIhopeTheFuckYouDo"
-  whenLifeGivesYouLemons   = "whenLifeGiveYouLemons" ~alnum
+  whenLifeGivesYouLemons   = "whenLifeGivesYouLemons"
   iSureHopeItDoes  = "iSureHopeItDoes"
   iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou"
   youreNotMyDad    = "youreNotMyDad"
   andIoop          = "andIoop"
-
+  int              = "int"
+  string           = "string"
+  boolean          = "boolean"
+  double           = "double"
+  
+  keyword     =  lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
+                 | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
+                 | int | string | boolean | double
 
   id          =  ~keyword letter idrest*
-  idrest      =  "_" | alnum
+  idrest      =  "_" | letter | digit
 }
