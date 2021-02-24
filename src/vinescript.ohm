@@ -1,23 +1,20 @@
 vinescript  {
   Program                 = Statement+
-  Statement               = "lookAtThisGraph" id "=" Exp                  --vardec
-                          | id "=" Exp                                    --assign
-                          | print Exp                                     --print
-                          | WhileStatement                                --while
-                          | Exp
+  Statement               = Declaration | Assignment | Print | Exp | WhileLoop                                --while
+  
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
                           | LogExp
-  LogExp                  = LogExp ("andIoop" | "||") MulExp              --logical
+  LogExp                  = LogExp (andIoop | "||") MulExp              --logical
                           | MulExp
   MulExp                  = MulExp ("*"|"/") InEq                         --timesdivide
                           | InEq
   InEq                    = InEq ("<=" | ">=" | "==" | "!=" | "<" | ">") NegExp --equality
                           | NegExp
-  NegExp                  = "youreNotMyDad"? PriExp                       --negation
-                          | "-" PriExp                                    --negative
-                          | PriExp
-  PriExp                  = "(" Statement ")"                             --paren
+  NegExp                  = youreNotMyDad? PrimaryExp                     --negation
+                          | "-" PrimaryExp                                --negative
+                          | PrimaryExp
+  PrimaryExp              = "(" Statement ")"                             --paren
                           | FuncCall
                           | id
                           | numlit
@@ -25,29 +22,37 @@ vinescript  {
                           | Conditional
                           | truefalse
 
-  WhileStatement          = "iAintGunnaStopLovinYou" "(" Exp ")" Exp+
-  Conditional             = Statement "bitchIhopeTheFuckYouDo" "(" Exp ")" Statement "orWhat" Statement --conditional
-  Function                = "whenLifeGivesYouLemons" id "(" Params ")" Body
+  Print                   = print Exp
+  Declaration             = lookAtThisGraph Type id "=" Exp
+  Assignment              = id "=" Exp
+  Type                    = "int" | "string" | "boolean" | "double"
+  WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" Exp+
+  Conditional             = Statement bitchIhopeTheFuckYouDo "(" Exp ")" Statement "orWhat" Statement --conditional
+  Function                = whenLifeGivesYouLemons id "(" Params ")" Body
   Params                  = ListOf<id, ",">
   Body                    = NonemptyListOf<Statement, ";"> "end"
   FuncCall                = id "(" ListOf<Statement, ","> ")"
-
+  
   numlit                  = digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
   print                   = "print" ~alnum
   space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
   indecop 	              =  "++" | "--"
-  
+
+  keyword     =  ("boolean" | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
+                 | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad) ~idrest
+
   truefalse        = iSureHopeItDoes | thatIsNotCorrect
   lookAtThisGraph  = "lookAtThisGraph"
   thatIsNotCorrect = "thatIsNotCorrect"
-  whenLifeGiveYouLemons   = "whenLifeGiveYouLemons" ~alnum
+  bitchIhopeTheFuckYouDo = "bitchIhopeTheFuckYouDo"
+  whenLifeGivesYouLemons   = "whenLifeGiveYouLemons" ~alnum
   iSureHopeItDoes  = "iSureHopeItDoes"
   iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou"
   youreNotMyDad    = "youreNotMyDad"
+  andIoop          = "andIoop"
 
-  keyword     =  ("boolean" | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
-                 | whenLifeGiveYouLemons | iAintGunnaStopLovinYou | youreNotMyDad) ~idrest
+
   id          =  ~keyword letter idrest*
   idrest      =  "_" | alnum
 }
