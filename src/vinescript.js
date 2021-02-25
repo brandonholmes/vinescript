@@ -27,5 +27,5 @@ async function compileFromFile(filename, outputType) {
 if (process.argv.length !== 4) {
     console.log(instructions)
 } else {
-    compileFromFile(proceess.argv[2], process.argv[3])
+    compileFromFile(process.argv[2], process.argv[3])
 }
