@@ -3,7 +3,11 @@ import parse from "../src/parser.js"
 
 const goodPrograms = [
   'lookAtThisGraph int x = 5',
-  'whenLifeGivesYouLemons myFunction(params) {lookAtThisGraph int x = 5 }',
+  `whenLifeGivesYouLemons myFunction(params) {
+        lookAtThisGraph int x = 5 
+        print x
+      }
+    myFunction(x)`,
   'iAintGunnaStopLovinYou(x < 5) x++',
   'bitchIhopeTheFuckYouDo(x > 5) x = 7 orWhat x = -7'
 ]
@@ -24,7 +28,7 @@ describe("The parser", () => {
     }
     for(const program of badPrograms) {
         it(`rejects bad programs`, () => {
-            assert.ok(!parse(program))
+            assert.throws(() => parse(program))
         })
     }
 })

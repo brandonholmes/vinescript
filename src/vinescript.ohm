@@ -9,7 +9,7 @@ vinescript  {
   Assignment              = id "=" Exp
   Print                   = print Exp
   WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" Statement+
-  Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ "orWhat" Exp
+  Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ "orWhat" Statement+
   
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
@@ -31,12 +31,7 @@ vinescript  {
                           | Conditional
                           | truefalse
 
-  
-
-
-  
-
-  FuncCall                = ~keyword id "(" ListOf<Statement, ","> ")"
+  FuncCall                = ~keyword id "(" Params ")"
   
   numlit                  = digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
@@ -53,6 +48,7 @@ vinescript  {
   whenLifeGivesYouLemons   = "whenLifeGivesYouLemons"
   iSureHopeItDoes  = "iSureHopeItDoes"
   iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou"
+  orWhat           = "orWhat"
   youreNotMyDad    = "youreNotMyDad"
   andIoop          = "andIoop"
   int              = "int"
@@ -60,9 +56,9 @@ vinescript  {
   boolean          = "boolean"
   double           = "double"
   
-  keyword     =  lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
-                 | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
-                 | int | string | boolean | double
+  keyword     = bitchIhopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
+              | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
+              | int | string | boolean | double
 
   id          =  ~keyword letter idrest*
   idrest      =  "_" | letter | digit
