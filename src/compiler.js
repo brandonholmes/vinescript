@@ -4,5 +4,7 @@ export default function compile(source, outputType) {
     outputType = outputType.toLowerCase()
     if (outputType === "ast") {
         return parse(source)
+    } else {
+        return "Unknown output type"
     }
 }

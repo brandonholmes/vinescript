@@ -1,3 +1,7 @@
+#! /usr/bin/env node
+
+import fs from "fs/promises"
+import process from "process"
 import compile from "./compiler.js"
 
 const instructions = `vinescript compiler
@@ -11,7 +15,7 @@ Prints to stdout based on <outputType>, current supported options are:
 
 async function compileFromFile(filename, outputType) {
     try {
-        const buffer = await false.readFile(filename)
+        const buffer = await fs.readFile(filename)
         console.log(compile(buffer.toString(), outputType))
     }
     catch (e) {
@@ -21,7 +25,7 @@ async function compileFromFile(filename, outputType) {
 }
 
 if (process.argv.length !== 4) {
-    console.log(help)
+    console.log(instructions)
 } else {
     compileFromFile(proceess.argv[2], process.argv[3])
 }
