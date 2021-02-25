@@ -22,13 +22,13 @@ export class Function {
         Object.assign(this, { name, parameters, body })
     }
 }
-
+/*
 export class Parameter {
     constructor(name) {
       Object.assign(this, { name })
     }
 }
-
+*/
 export class Variable {
     constructor(type, name, expression) {
       Object.assign(this, { type, name, expression })
@@ -64,7 +64,7 @@ export class NegExpression {
         Object.assign(this, {op, left})
     }
 }
-
+/*
 export class PrefixExpression {
     constructor(op, right) {
       Object.assign(this, { op, right });
@@ -76,7 +76,7 @@ export class PostfixExpression {
       Object.assign(this, { left, op });
     }
 }
-
+*/
 export class IdentifierExpression {
     constructor(name) {
       this.name = name
@@ -88,7 +88,7 @@ export class FuncCall {
     Object.assign(this, { calle, args })
   }
 }
-
+/*
   export class NumericLiteral  {
     constructor(value) {
       this.value = value;
@@ -100,3 +100,4 @@ export class FuncCall {
       this.value = value;
     }
   }
+  */
