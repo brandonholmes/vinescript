@@ -1,0 +1,6 @@
+whenLifeGivesYouLemons myOtherFunction(x, y) {
+  lookAtThisGraph int z = x - y
+  lookAtThisGraph string a = "test"
+  print x
+  print a
+}

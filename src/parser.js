@@ -67,7 +67,6 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   }
 })
 
-//homework2 - should be able to run 'npm test' with this in place and get 100% code coverage
 export default function parse(sourceCode) {
   const match = grammar.match(sourceCode)
   if (!match.succeeded()) {
@@ -75,10 +74,3 @@ export default function parse(sourceCode) {
   }
   return astBuilder(match).tree()
 }
-/*
-//homework1 parse function for making sure we didn't break anything from the original code base
-export default function parse(source) {
-  const match = grammar.match(source)
-  return match.succeeded()
-}
-*/
