@@ -9,6 +9,24 @@ export class Program {
     }
 }
 
+export class Type {
+  constructor(name) {
+    this.name = name
+  }
+
+  static BOOLEAN = new Type("boolean")
+  static INT = new Type("int")
+  static STRING = new Type("string")
+  
+  isEquivalentTo(target) {
+    return this == target
+  }
+  
+  isAssignableTo(target) {
+    return this.isEquivalentTo(target)
+  }
+}
+
 export class Conditional {
     constructor(expression, statements, elseStatements) {
         Object.assign(this, { expression, statements, elseStatements })
@@ -21,22 +39,40 @@ export class WhileLoop {
     }
 }
 
-export class Function {
+export class FunctionDeclaration {
     constructor(name, parameters, body) {
         Object.assign(this, { name, parameters, body })
     }
 }
-/*
+
+// Created during semantic analysis only!
+export class Function {
+  constructor(name) {
+    this.name = name
+    // Other properties set after construction
+  }
+}
+
+
 export class Parameter {
     constructor(name) {
       Object.assign(this, { name })
     }
 }
-*/
-export class Variable {
+
+
+//VariableDeclaration(_lookAtThisGraph, type, name, _equal, expressions) 
+export class VariableDeclaration {
     constructor(type, name, expression) {
       Object.assign(this, { type, name, expression })
     }
+}
+
+// Created during semantic analysis only!
+export class Variable {
+  constructor(name) {
+    Object.assign(this, { name })
+  }
 }
 
 export class Assignment {
