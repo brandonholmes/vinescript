@@ -3,7 +3,7 @@
 ![Logo](https://github.com/brandonholmes/vinescript/blob/master/docs/Logo.png)
 
 ## Introduction
-  Welcome to VineScript, the nostalgic script that takes your programs back to the 2012 era. Each expression elicits memories of simpler times. Check out our website (Vinescript website)[https://brandonholmes.github.io/vinescript/]
+  Welcome to VineScript, the nostalgic script that takes your programs back to the 2012 era. Each expression elicits memories of simpler times. Check out our website [Vinescript website](https://brandonholmes.github.io/vinescript/)
 
 ## Features
 * If/Else 
