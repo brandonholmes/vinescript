@@ -9,10 +9,10 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.Program(statements.tree())
   },
   Function(_whenLifeGivesYouLemons, name, _left, params, _right, _open, body, _close){
-    return new ast.Function(name.tree(), params.tree(), body.tree())
+    return new ast.FunctionDeclaration(name.tree(), params.tree(), body.tree())
   },
-  Variable(_lookAtThisGraph, type, name, _equal, expressions) {
-    return new ast.Variable(type.tree(), name.tree(), expressions.tree())
+  Variable(_lookAtThisGraph, type, name, _equal, expression) {
+    return new ast.VariableDeclaration(type.tree(), name.tree(), expression.tree())
   },
   Params(paramList) {
     return paramList.asIteration().tree()
@@ -46,9 +46,12 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   },
   NegExp_negation(_youreNotMyDad, expression) {
     return new ast.NegExpression(expression.tree())
-  },
+  },/*
   NegExp_negative(_neg, expression) {
-    return new ast.NegExpression(expression.tree())
+    return new ast.NegExpression(_neg.tree(), expression.tree())
+  },*/
+  PrimaryExp_paren (_left, statement, _right) {
+    return new ast.PrimaryExpression(expression.tree())
   },
   FuncCall(calle, _left, args, _right) {
     return new ast.FuncCall(calle.tree(), args.tree())
@@ -59,8 +62,8 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   strlit(_left, strlit, _right) {
     return strlit.sourceString
   },
-  numlit(digits, _dot, decimals, _carrot, exponents) {
-    return Number(digits.sourceString + "." + decimals.sourceString + "^" + exponents.sourceString)
+  numlit(_neg, _digits, _dot, _decimals, _carrot, _exponents) {
+    return Number(this.sourceString)
   },
   _terminal() {
     return this.sourceString

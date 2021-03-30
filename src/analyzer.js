@@ -130,6 +130,7 @@ class Context {
       return new Context(this, configuration)
     }
     analyze(node) {
+        console.log(node)
         console.log(node.constructor.name)
         return this[node.constructor.name](node)
     }
@@ -171,6 +172,14 @@ class Context {
         this.add(f.name, f)
         d.body = childContext.analyze(d.body)
         return d
+    }
+    VariableDeclaration(d) {
+      // Declarations generate brand new variable objects
+      d.expression = this.analyze(d.expression)
+      d.name = new Variable(d.name, d.readOnly)
+      d.name.type = d.name.type
+      this.add(d.name.name, d.expression)
+      return d
     }
     Variable(d) {
         // Declarations generate brand new variable objects
@@ -251,6 +260,22 @@ class Context {
     }
     Array(a) {
         return a.map(item => this.analyze(item))
+    }
+    Identifier(e) {
+      // Id expressions get "replaced" with the entities they refer to.
+      return this.lookup(e.name)
+    }
+    Number(e) {
+      return e
+    }
+    BigInt(e) {
+      return e
+    }
+    Boolean(e) {
+      return e
+    }
+    String(e) {
+      return e
     }
 }
 

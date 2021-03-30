@@ -20,9 +20,8 @@ vinescript  {
                           | InEq
   InEq                    = InEq ("<=" | ">=" | "==" | "!=" | "<" | ">") NegExp --equality
                           | NegExp
-  NegExp                  = youreNotMyDad? PrimaryExp                     --negation
-                          | "-" PrimaryExp                                --negative
-                          | PrimaryExp
+  NegExp                  = PrimaryExp
+                          | youreNotMyDad? PrimaryExp                     --negation
   PrimaryExp              = "(" Statement ")"                             --paren
                           | FuncCall
                           | id
@@ -33,7 +32,7 @@ vinescript  {
 
   FuncCall                = ~keyword id "(" Params ")"
   
-  numlit                  = digit+ ("."digit+)? ("^"digit+)?
+  numlit                  = "-"? digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
   print                   = "print" ~alnum
   space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
