@@ -3,12 +3,12 @@ import parse from "../src/parser.js"
 
 const goodPrograms = [
   'lookAtThisGraph int x = 5',
-  `whenLifeGivesYouLemons myFunction(y) {
+  `whenLifeGivesYouLemons int myFunction(int y) {
         lookAtThisGraph int x = 5 
         print x
       }
     myFunction(x)`,
-  `whenLifeGivesYouLemons myOtherFunction(x, y) {
+  `whenLifeGivesYouLemons int myOtherFunction(int x, int y) {
     lookAtThisGraph int z = x - y
     lookAtThisGraph string a = "test"
     print x
@@ -20,7 +20,18 @@ const goodPrograms = [
 ]
 
 const badPrograms = [
-  'whenLifeGivesYouLemons myFunction(params) {lookAtThisGraph x = 5}',
+  'whenLifeGivesYouLemons int myFunction(params) {lookAtThisGraph x = 5}',
+  `whenLifeGivesYouLemons myFunction(y) {
+    lookAtThisGraph int x = 5 
+    print x
+  }
+  myFunction(x)`,
+  `whenLifeGivesYouLemons myOtherFunction(x, y) {
+    lookAtThisGraph int z = x - y
+    lookAtThisGraph string a = "test"
+    print x
+    print a
+  }`,
   'lookAtThisGraph x',
   'bitchIhopeTheFuckYouDo(youreNotMyDad) x = 7 orWhat x = -7',
   'x +',

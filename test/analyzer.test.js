@@ -4,8 +4,9 @@ import analyze from "../src/analyzer.js"
 import * as ast from "../src/ast.js"
 
 const semanticChecks = [
-    ["variable declaration", 'lookAtThisGraph int z = 4']
-    //,["variable declaration", 'lookAtThisGraph int z = 7']
+    //["variable declaration", 'lookAtThisGraph int z = 4']
+   //,["variable declaration", 'lookAtThisGraph int z = 7'],
+   ["function declaration", `whenLifeGivesYouLemons int myOtherFunction(int x, int y) { print x }`]
 ]
 
 //const semanticErrors = []

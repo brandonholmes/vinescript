@@ -1,13 +1,15 @@
 vinescript  {
   Program                 = Statement+
-  Statement               = Conditional | WhileLoop | Declaration | Assignment | Print |  Exp
+  Statement               = Conditional | WhileLoop | Declaration | Assignment | Print | FuncCall | Exp
   Declaration             = Function | Variable
-  Function                = whenLifeGivesYouLemons id "(" Params ")" "{" Body "}"
-  Params                  = ListOf<id, ",">
+  Function                = whenLifeGivesYouLemons type id "(" Params ")" "{" Body "}"
+  Params                  = ListOf<Param, ",">
+  Param                   = type id
   Body                    = Statement*
   Variable                = lookAtThisGraph type id "=" Exp
   Assignment              = id "=" Exp
   Print                   = print Exp
+  FuncCall                = ~keyword id "(" ListOf<id, ","> ")"
   WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" Statement+
   Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ "orWhat" Statement+
   
@@ -22,15 +24,15 @@ vinescript  {
                           | NegExp
   NegExp                  = PrimaryExp
                           | youreNotMyDad? PrimaryExp                     --negation
-  PrimaryExp              = "(" Statement ")"                             --paren
-                          | FuncCall
+  PrimaryExp              = 
+                          | "(" Statement ")"                             --paren
                           | id
                           | numlit
                           | strlit
                           | Conditional
                           | truefalse
 
-  FuncCall                = ~keyword id "(" Params ")"
+
   
   numlit                  = "-"? digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""

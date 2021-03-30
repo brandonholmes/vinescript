@@ -16,7 +16,7 @@ export class Type {
 
   static BOOLEAN = new Type("boolean")
   static INT = new Type("int")
-  static STRING = new Type("string")
+  static STRING = new Type("String")
   
   isEquivalentTo(target) {
     return this == target
@@ -24,6 +24,14 @@ export class Type {
   
   isAssignableTo(target) {
     return this.isEquivalentTo(target)
+  }
+}
+
+export class FunctionType extends Type {
+  // Example: (boolean,[string]?)->float
+  constructor(parameterTypes, returnType) {
+    super(`(${parameterTypes.map(t => t.name).join(",")})->${returnType.name}`)
+    Object.assign(this, { parameterTypes, returnType })
   }
 }
 
@@ -40,8 +48,8 @@ export class WhileLoop {
 }
 
 export class FunctionDeclaration {
-    constructor(name, parameters, body) {
-        Object.assign(this, { name, parameters, body })
+    constructor(returnType, name, parameters, body) {
+        Object.assign(this, { returnType, name, parameters, body })
     }
 }
 
@@ -55,8 +63,8 @@ export class Function {
 
 
 export class Parameter {
-    constructor(name) {
-      Object.assign(this, { name })
+    constructor(type, name) {
+      Object.assign(this, { type, name })
     }
 }
 

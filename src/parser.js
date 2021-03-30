@@ -8,14 +8,22 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Program(statements) {
     return new ast.Program(statements.tree())
   },
-  Function(_whenLifeGivesYouLemons, name, _left, params, _right, _open, body, _close){
-    return new ast.FunctionDeclaration(name.tree(), params.tree(), body.tree())
+  Function(_whenLifeGivesYouLemons, type, name, _left, params, _right, _open, body, _close){
+    const returnType = type.tree()
+    return new ast.FunctionDeclaration(
+      returnType.length === 0 ? null : returnType[0], 
+      name.sourceString, 
+      params.tree(), 
+      body.tree())
   },
   Variable(_lookAtThisGraph, type, name, _equal, expression) {
     return new ast.VariableDeclaration(type.tree(), name.tree(), expression.tree())
   },
   Params(paramList) {
     return paramList.asIteration().tree()
+  },
+  Param(type, id) {
+    return new ast.Parameter(type.tree(), id.tree())
   },
   Assignment(target, _equal, source) {
     return new ast.Assignment(target.tree(), source.tree())
@@ -55,6 +63,9 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   },
   FuncCall(calle, _left, args, _right) {
     return new ast.FuncCall(calle.tree(), args.tree())
+  },
+  NonemptyListOf(first, _, rest) {
+    return [first.tree(), ...rest.tree()];
   },
   id(_first, _rest) {
     return new ast.IdentifierExpression(this.sourceString)

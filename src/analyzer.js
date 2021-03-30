@@ -4,6 +4,7 @@ import {
     Function,
     Variable,
     Assignment,
+    FunctionType,
     Print,
     BinaryExpression,
     Type
@@ -34,7 +35,9 @@ const check = self => ({
     isInteger() {
         must(self.type === Type.INT, `Expected an integer, found ${self.type.name}`)
     },
-    //isAType <-- I don't think we need this since we don't have Structs
+    isAType() {
+        must(self instanceof Type, "Type expected")
+    },
     //isAnOptional <-- I don't think we need this since we don't have optionals?
     isAnArray() {
         must(self.type.constructor === ArrayType, "Array expected")
@@ -88,11 +91,6 @@ const check = self => ({
 })
 
 
-/*
-bunch of stuff goes here
-*/
-
-
 class Context {
     constructor(parent = null, configuration = {}) {
       // Parent (enclosing scope) for static scope analysis
@@ -130,12 +128,9 @@ class Context {
       return new Context(this, configuration)
     }
     analyze(node) {
-        console.log(node)
-        console.log(node.constructor.name)
         return this[node.constructor.name](node)
     }
     Program(p) {
-        console.log("analyzer: 137")
         p.statements = this.analyze(p.statements)
         return p
     }
@@ -144,8 +139,8 @@ class Context {
         check(e.expression).isBoolean()
         e.statements = this.analyze(e.statements)
         e.elseStatements = this.analyze(e.elseStatements)
-        // check(e.statements).hasSameTypeAs(e.elseStatements)
-        // e.type = e.statements.type
+        check(e.statements).hasSameTypeAs(e.elseStatements)
+        e.type = e.statements.type
         return e
     }
     WhileLoop(s) {
@@ -164,14 +159,20 @@ class Context {
         // because it is possible to declare a function inside a loop!
         const childContext = this.newChild({ inLoop: false, forFunction: f })
         d.parameters = childContext.analyze(d.parameters)
-        // f.type = new FunctionType(
-        //   d.parameters.map(p => p.type),
-        //   d.returnType
-        // )
+        f.type = new FunctionType(
+           d.parameters.map(p => p.type),
+           d.returnType
+        )
         // Add before analyzing the body to allow recursion
         this.add(f.name, f)
         d.body = childContext.analyze(d.body)
         return d
+    }
+    Parameter(p) {
+      p.type = this.analyze(p.type)
+      //check(p.type).isAType()
+      this.add(p.name, p)
+      return p
     }
     VariableDeclaration(d) {
       // Declarations generate brand new variable objects
@@ -185,7 +186,7 @@ class Context {
         // Declarations generate brand new variable objects
         d.expression = this.analyze(d.expression)
         d.variable = new Variable(d.name)
-        // d.variable.type = d.expression.type
+        d.variable.type = d.expression.type
         this.add(d.variable.name, d.variable)
         return d
     }
@@ -202,22 +203,22 @@ class Context {
         if (["&", "|", "^", "<<", ">>"].includes(e.op)) {
           check(e.left).isInteger()
           check(e.right).isInteger()
-          // e.type = Type.INT
+          e.type = Type.INT
         } else if (["+"].includes(e.op)) {
           check(e.left).isNumericOrString()
           check(e.left).hasSameTypeAs(e.right)
-          // e.type = e.left.type
+          e.type = e.left.type
         } else if (["-", "*", "/", "%", "**"].includes(e.op)) {
           check(e.left).isNumeric()
           check(e.left).hasSameTypeAs(e.right)
-          // e.type = e.left.type
+          e.type = e.left.type
         } else if (["<", "<=", ">", ">="].includes(e.op)) {
           check(e.left).isNumericOrString()
           check(e.left).hasSameTypeAs(e.right)
-          // e.type = Type.BOOLEAN
+          e.type = Type.BOOLEAN
         } else if (["==", "!="].includes(e.op)) {
           check(e.left).hasSameTypeAs(e.right)
-          // e.type = Type.BOOLEAN
+          e.type = Type.BOOLEAN
         }
         return e
     }
@@ -225,25 +226,23 @@ class Context {
         e.left = this.analyze(e.left)
         if (e.op === "#") {
           check(e.left).isAnArray()
-          // e.type = Type.INT
+          e.type = Type.INT
         } else if (e.op === "-") {
           check(e.left).isNumeric()
-          // e.type = e.left.type
+          e.type = e.left.type
         } else if (e.op === "!") {
           check(e.left).isBoolean()
-          // e.type = Type.BOOLEAN
+          e.type = Type.BOOLEAN
         } else {
           // Operator is "some"
-          // e.type = new OptionalType(e.left.type)
+          //e.type = new OptionalType(e.left.type)
         }
         return e
     }
-    IdentifierExpression(e) {
-        // Id expressions get "replaced" with the variables they refer to
-        return this.lookup(e.name)
-    }
+    
     Print(e) {
-        return this.lookup(e.name)
+        e.argument = this.analyze(e.argument)
+        return e
     }
     FuncCall(c) {
         c.callee = this.analyze(c.callee)
@@ -261,7 +260,7 @@ class Context {
     Array(a) {
         return a.map(item => this.analyze(item))
     }
-    Identifier(e) {
+    IdentifierExpression(e) {
       // Id expressions get "replaced" with the entities they refer to.
       return this.lookup(e.name)
     }
