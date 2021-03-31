@@ -1,29 +1,30 @@
-import util from "util"
+import util from 'util';
 //ALL OUR CLASSES GO HERE
 export class Program {
-    constructor(statements) {
-        this.statements = statements
-    }
-    [util.inspect.custom]() {
-      return prettied(this)
-    }
+  constructor(statements) {
+    this.statements = statements;
+  }
+  [util.inspect.custom]() {
+    return prettied(this);
+  }
 }
 
 export class Type {
   constructor(name) {
-    this.name = name
+    this.name = name;
   }
 
-  static BOOLEAN = new Type("boolean")
-  static INT = new Type("int")
-  static STRING = new Type("String")
-  
+  static BOOLEAN = new Type('boolean');
+  static INT = new Type('int');
+  static STRING = new Type('string');
+  static DOUBLE = new Type('double');
+
   isEquivalentTo(target) {
-    return this == target
+    return this == target;
   }
-  
+
   isAssignableTo(target) {
-    return this.isEquivalentTo(target)
+    return this.isEquivalentTo(target);
   }
 }
 
@@ -31,93 +32,91 @@ export class FunctionType extends Type {
   // Carlos: (boolean,[string]?)->float
   // Vinescript: (int, int)->int
   constructor(parameterTypes, returnType) {
-    super(`(${parameterTypes.map(t => t.name).join(",")})->${returnType.name}`)
-    Object.assign(this, { parameterTypes, returnType })
+    super(`(${parameterTypes.map(t => t.name).join(',')})->${returnType.name}`);
+    Object.assign(this, { parameterTypes, returnType });
   }
 }
 
 export class Conditional {
-    constructor(expression, statements, elseStatements) {
-        Object.assign(this, { expression, statements, elseStatements })
-    }
+  constructor(expression, statements, elseStatements) {
+    Object.assign(this, { expression, statements, elseStatements });
+  }
 }
 
 export class WhileLoop {
-    constructor(expression, body) {
-        Object.assign(this, { expression, body })
-    }
+  constructor(expression, body) {
+    Object.assign(this, { expression, body });
+  }
 }
 
 export class FunctionDeclaration {
-    constructor(returnType, name, parameters, body) {
-        Object.assign(this, { returnType, name, parameters, body })
-    }
+  constructor(returnType, name, parameters, body) {
+    Object.assign(this, { returnType, name, parameters, body });
+  }
 }
 
 // Created during semantic analysis only!
 export class Function {
   constructor(name) {
-    this.name = name
+    this.name = name;
     // Other properties set after construction
   }
 }
 
-
 export class Parameter {
-    constructor(type, name) {
-      Object.assign(this, { type, name })
-    }
+  constructor(type, name) {
+    Object.assign(this, { type, name });
+  }
 }
 
-
-//VariableDeclaration(_lookAtThisGraph, type, name, _equal, expressions) 
+//VariableDeclaration(_lookAtThisGraph, type, name, _equal, expressions)
 export class VariableDeclaration {
-    constructor(type, name, expression) {
-      Object.assign(this, { type, name, expression })
-    }
+  constructor(type, name, expression) {
+    Object.assign(this, { type, name, expression });
+  }
 }
 
 // Created during semantic analysis only!
 export class Variable {
   constructor(name) {
-    Object.assign(this, { name })
+    Object.assign(this, { name });
   }
 }
 
 export class Assignment {
-    constructor(target, source) {
-      Object.assign(this, { target, source })
-    }
+  constructor(target, source) {
+    Object.assign(this, { target, source });
   }
+}
 
 export class Print {
-    constructor(argument) {
-      this.argument = argument
-    }
+  constructor(argument) {
+    this.argument = argument;
+  }
 }
-  
+
 export class BinaryExpression {
-    constructor(op, left, right) {
-      Object.assign(this, { op, left, right })
-    }
+  constructor(op, left, right) {
+    Object.assign(this, { op, left, right });
+  }
 }
 
 export class UnaryExpression {
-    constructor(op, left) {
-        Object.assign(this, {op, left})
-    }
+  constructor(op, left) {
+    Object.assign(this, { op, left });
+  }
 }
 
 export class ReturnStatement {
   constructor(expression) {
-    this.expression = expression
+    this.expression = expression;
   }
 }
 
 export class NegExpression {
-    constructor(op, left) {
-        Object.assign(this, {op, left})
-    }
+  constructor(op, left) {
+    Object.assign(this, { op, left });
+  }
 }
 /*
 export class PrefixExpression {
@@ -133,14 +132,14 @@ export class PostfixExpression {
 }
 */
 export class IdentifierExpression {
-    constructor(name) {
-      this.name = name
-    }
+  constructor(name) {
+    this.name = name;
+  }
 }
 
 export class FuncCall {
   constructor(calle, args) {
-    Object.assign(this, { calle, args })
+    Object.assign(this, { calle, args });
   }
 }
 /*
@@ -149,7 +148,7 @@ export class FuncCall {
       this.value = value;
     }
   }
-  
+
   export class StringLiteral  {
     constructor(value) {
       this.value = value;
@@ -157,33 +156,33 @@ export class FuncCall {
   }
   */
 
- function prettied(node) {
+function prettied(node) {
   // Return a compact and pretty string representation of the node graph,
   // taking care of cycles. Written here from scratch because the built-in
   // inspect function, while nice, isn't nice enough.
-  const tags = new Map()
+  const tags = new Map();
 
   function tag(node) {
-    if (tags.has(node) || typeof node !== "object" || node === null) return
-    tags.set(node, tags.size + 1)
+    if (tags.has(node) || typeof node !== 'object' || node === null) return;
+    tags.set(node, tags.size + 1);
     for (const child of Object.values(node)) {
-      Array.isArray(child) ? child.forEach(tag) : tag(child)
+      Array.isArray(child) ? child.forEach(tag) : tag(child);
     }
   }
 
   function* lines() {
     function view(e) {
-      if (tags.has(e)) return `#${tags.get(e)}`
-      if (Array.isArray(e)) return `[${e.map(view)}]`
-      return util.inspect(e)
+      if (tags.has(e)) return `#${tags.get(e)}`;
+      if (Array.isArray(e)) return `[${e.map(view)}]`;
+      return util.inspect(e);
     }
     for (let [node, id] of [...tags.entries()].sort((a, b) => a[1] - b[1])) {
-      let [type, props] = [node.constructor.name, ""]
-      Object.entries(node).forEach(([k, v]) => (props += ` ${k}=${view(v)}`))
-      yield `${String(id).padStart(4, " ")} | ${type}${props}`
+      let [type, props] = [node.constructor.name, ''];
+      Object.entries(node).forEach(([k, v]) => (props += ` ${k}=${view(v)}`));
+      yield `${String(id).padStart(4, ' ')} | ${type}${props}`;
     }
   }
 
-  tag(node)
-  return [...lines()].join("\n")
+  tag(node);
+  return [...lines()].join('\n');
 }
