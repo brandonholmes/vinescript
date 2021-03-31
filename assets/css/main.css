@@ -329,7 +329,7 @@ input, select, textarea {
 		-webkit-overflow-scrolling: touch;
 		font-family: "Courier New", monospace;
 		font-size: 0.9rem;
-		margin: 0 0 2rem 0;
+		margin: 0 2rem 2rem 0;
 		width: 100%;
 	}
 
