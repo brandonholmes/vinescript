@@ -1,8 +1,8 @@
-import assert from "assert"
-import parse from "../src/parser.js"
+import assert from "assert";
+import parse from "../src/parser.js";
 
 const goodPrograms = [
-  'lookAtThisGraph int x = 5',
+  `lookAtThisGraph int x = 5`,
   `whenLifeGivesYouLemons int myFunction(int y) {
         lookAtThisGraph int x = 5 
         print x
@@ -17,11 +17,11 @@ const goodPrograms = [
   }`,
   `iAintGunnaStopLovinYou(x < 5) x++`,
   `bitchIhopeTheFuckYouDo(x andIoop y) print 14 / 2 orWhat print 14 * 2`,
-  'bitchIhopeTheFuckYouDo(x > 5) x = 7 orWhat x = -7'
-]
+  `bitchIhopeTheFuckYouDo(x > 5) x = 7 orWhat x = -7`,
+];
 
 const badPrograms = [
-  'whenLifeGivesYouLemons int myFunction(params) {lookAtThisGraph x = 5}',
+  `whenLifeGivesYouLemons int myFunction(params) {lookAtThisGraph x = 5}`,
   `whenLifeGivesYouLemons myFunction(y) {
     lookAtThisGraph int x = 5 
     print x
@@ -33,21 +33,21 @@ const badPrograms = [
     print x
     print a
   }`,
-  'lookAtThisGraph x',
-  'bitchIhopeTheFuckYouDo(youreNotMyDad) x = 7 orWhat x = -7',
-  'x +',
-  'print )'
-]
+  `lookAtThisGraph x`,
+  `bitchIhopeTheFuckYouDo(youreNotMyDad) x = 7 orWhat x = -7`,
+  `x +`,
+  `print )`,
+];
 
 describe("The parser", () => {
-    for(const program of goodPrograms) {
-        it(`recognizes good programs`, () => {
-            assert.ok(parse(program))
-        })
-    }
-    for(const program of badPrograms) {
-        it(`rejects bad programs`, () => {
-            assert.throws(() => parse(program))
-        })
-    }
-})
+  for (const program of goodPrograms) {
+    it(`recognizes good programs`, () => {
+      assert.ok(parse(program));
+    });
+  }
+  for (const program of badPrograms) {
+    it(`rejects bad programs`, () => {
+      assert.throws(() => parse(program));
+    });
+  }
+});

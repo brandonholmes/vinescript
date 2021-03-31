@@ -8,9 +8,9 @@ import {
   Print,
   BinaryExpression,
   Type,
-} from './ast.js';
-import * as stdlib from './stdlib.js';
-import util from 'util';
+} from "./ast.js";
+import * as stdlib from "./stdlib.js";
+import util from "util";
 
 function must(condition, errorMessage) {
   if (!condition) {
@@ -18,9 +18,12 @@ function must(condition, errorMessage) {
   }
 }
 
-const check = self => ({
+const check = (self) => ({
   isNumeric() {
-    must([Type.INT, Type.FLOAT].includes(self.type), `Expected a number, found ${self.type.name}`);
+    must(
+      [Type.INT, Type.FLOAT].includes(self.type),
+      `Expected a number, found ${self.type.name}`
+    );
   },
   isNumericOrString() {
     must(
@@ -29,25 +32,34 @@ const check = self => ({
     );
   },
   isBoolean() {
-    must(self.type === Type.BOOLEAN, `Expected a boolean, found ${self.type.name}`);
+    must(
+      self.type === Type.BOOLEAN,
+      `Expected a boolean, found ${self.type.name}`
+    );
   },
   isInteger() {
-    must(self.type === Type.INT, `Expected an integer, found ${self.type.name}`);
+    must(
+      self.type === Type.INT,
+      `Expected an integer, found ${self.type.name}`
+    );
   },
   isAType() {
-    must(self instanceof Type, 'Type expected');
+    must(self instanceof Type, "Type expected");
   },
   //isAnOptional <-- I don't think we need this since we don't have optionals?
   isAnArray() {
-    must(self.type.constructor === ArrayType, 'Array expected');
+    must(self.type.constructor === ArrayType, "Array expected");
   },
   hasSameTypeAs(other) {
-    must(self.type.isEquivalentTo(other.type), 'Operands do not have the same type');
+    must(
+      self.type.isEquivalentTo(other.type),
+      "Operands do not have the same type"
+    );
   },
   allHaveSameType() {
     must(
-      self.slice(1).every(e => e.type === self[0].type),
-      'Not all elements have the same type'
+      self.slice(1).every((e) => e.type === self[0].type),
+      "Not all elements have the same type"
     );
   },
   isAssignableTo(type) {
@@ -60,23 +72,29 @@ const check = self => ({
     must(!self.readOnly, `Cannot assign to constant ${self.name}`);
   },
   areAllDistinct() {
-    must(new Set(self.map(f => f.name)).size === self.length, 'Fields must be distinct');
+    must(
+      new Set(self.map((f) => f.name)).size === self.length,
+      "Fields must be distinct"
+    );
   },
   isInTheOBject(object) {
-    must(object.type.fields.map(f => f.name).includes(self), 'No such field');
+    must(object.type.fields.map((f) => f.name).includes(self), "No such field");
   },
   //isInsideALoop <-- I don't think we need this cuz we don't have a break?
   isInsideAFunction(context) {
-    must(self.function, 'Return can only appear in a function');
+    must(self.function, "Return can only appear in a function");
   },
   isCallable() {
-    must(self.constructor === FunctionType, 'Call of non-function'); // do we need this since we don't have function type?
+    must(self.constructor === FunctionType, "Call of non-function"); // do we need this since we don't have function type?
   },
   returnsNothing() {
-    must(self.type.returnType === Type.VOID, 'Something should be returned here');
+    must(
+      self.type.returnType === Type.VOID,
+      "Something should be returned here"
+    );
   },
   returnsSomething() {
-    must(self.type.returnType !== Type.VOID, 'Cannot return a value here');
+    must(self.type.returnType !== Type.VOID, "Cannot return a value here");
   },
   isReturnableFrom(f) {
     check(self).isAssignableTo(f.type.returnType);
@@ -92,7 +110,7 @@ const check = self => ({
     check(self).match(calleeType.parameterTypes);
   },
   matchFieldsOf(structType) {
-    check(self).match(structType.fields.map(f => f.type));
+    check(self).match(structType.fields.map((f) => f.type));
   },
 });
 
@@ -170,7 +188,7 @@ class Context {
     const childContext = this.newChild({ inLoop: false, forFunction: f });
     d.parameters = childContext.analyze(d.parameters);
     f.type = new FunctionType(
-      d.parameters.map(p => p.type),
+      d.parameters.map((p) => p.type),
       d.returnType
     );
     // Add before analyzing the body to allow recursion
@@ -203,7 +221,7 @@ class Context {
   Assignment(s) {
     s.source = this.analyze(s.source);
     s.target = this.analyze(s.target);
-    console.log(`source is: ${s.source}`);
+    //console.log(`source is: ${s.source}`);
     `target is: ${s.target.type}`;
     check(s.source).isAssignableTo(s.target.type);
     check(s.target).isNotReadOnly();
@@ -212,23 +230,23 @@ class Context {
   BinaryExpression(e) {
     e.left = this.analyze(e.left);
     e.right = this.analyze(e.right);
-    if (['&', '|', '^', '<<', '>>'].includes(e.op)) {
+    if (["&", "|", "^", "<<", ">>"].includes(e.op)) {
       check(e.left).isInteger();
       check(e.right).isInteger();
       e.type = Type.INT;
-    } else if (['+'].includes(e.op)) {
+    } else if (["+"].includes(e.op)) {
       check(e.left).isNumericOrString();
       check(e.left).hasSameTypeAs(e.right);
       e.type = e.left.type;
-    } else if (['-', '*', '/', '%', '**'].includes(e.op)) {
+    } else if (["-", "*", "/", "%", "**"].includes(e.op)) {
       check(e.left).isNumeric();
       check(e.left).hasSameTypeAs(e.right);
       e.type = e.left.type;
-    } else if (['<', '<=', '>', '>='].includes(e.op)) {
+    } else if (["<", "<=", ">", ">="].includes(e.op)) {
       check(e.left).isNumericOrString();
       check(e.left).hasSameTypeAs(e.right);
       e.type = Type.BOOLEAN;
-    } else if (['==', '!='].includes(e.op)) {
+    } else if (["==", "!="].includes(e.op)) {
       check(e.left).hasSameTypeAs(e.right);
       e.type = Type.BOOLEAN;
     }
@@ -236,13 +254,13 @@ class Context {
   }
   UnaryExpression(e) {
     e.left = this.analyze(e.left);
-    if (e.op === '#') {
+    if (e.op === "#") {
       check(e.left).isAnArray();
       e.type = Type.INT;
-    } else if (e.op === '-') {
+    } else if (e.op === "-") {
       check(e.left).isNumeric();
       e.type = e.left.type;
-    } else if (e.op === '!') {
+    } else if (e.op === "!") {
       check(e.left).isBoolean();
       e.type = Type.BOOLEAN;
     } else {
@@ -274,7 +292,7 @@ class Context {
     return c;
   }
   Array(a) {
-    return a.map(item => this.analyze(item));
+    return a.map((item) => this.analyze(item));
   }
   IdentifierExpression(e) {
     // Id expressions get "replaced" with the entities they refer to.
