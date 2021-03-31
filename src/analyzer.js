@@ -10,6 +10,7 @@ import {
     Type
 } from "./ast.js"
 import * as stdlib from "./stdlib.js"
+import util from "util"
 
 function must(condition, errorMessage) {
     if(!condition) {
@@ -49,6 +50,7 @@ const check = self => ({
         must(self.slice(1).every(e => e.type === self[0].type), "Not all elements have the same type")
     },
     isAssignableTo(type) {
+        console.log(self.type)
         must(type == Type.ANY || self.type.isAssignableTo(type), `Cannot assign a ${self.type.name} to a ${type.name}`)
     },
     isNotReadOnly() {
@@ -174,6 +176,7 @@ class Context {
       p.type = this.analyze(p.type)
       //check(p.type).isAType()
       this.add(p.name, p)
+      console.log(`After adding locals is now ${util.inspect(this.locals)}`)
       return p
     }
     VariableDeclaration(d) {
@@ -195,6 +198,8 @@ class Context {
     Assignment(s) {
         s.source = this.analyze(s.source)
         s.target = this.analyze(s.target)
+        console.log(`source is: ${s.source}`)
+        console.log(`target is: ${s.target.type}`)
         check(s.source).isAssignableTo(s.target.type)
         check(s.target).isNotReadOnly()
         return s

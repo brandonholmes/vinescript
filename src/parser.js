@@ -17,13 +17,13 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
       body.tree())
   },
   Variable(_lookAtThisGraph, type, name, _equal, expression) {
-    return new ast.VariableDeclaration(type.tree(), name.tree(), expression.tree())
+    return new ast.VariableDeclaration(type.tree(), name.souceString, expression.tree())
   },
   Params(paramList) {
     return paramList.asIteration().tree()
   },
   Param(type, id) {
-    return new ast.Parameter(type.tree(), id.tree())
+    return new ast.Parameter(type.tree(), id.sourceString)
   },
   Assignment(target, _equal, source) {
     return new ast.Assignment(target.tree(), source.tree())
