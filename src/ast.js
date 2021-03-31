@@ -28,7 +28,8 @@ export class Type {
 }
 
 export class FunctionType extends Type {
-  // Example: (boolean,[string]?)->float
+  // Carlos: (boolean,[string]?)->float
+  // Vinescript: (int, int)->int
   constructor(parameterTypes, returnType) {
     super(`(${parameterTypes.map(t => t.name).join(",")})->${returnType.name}`)
     Object.assign(this, { parameterTypes, returnType })
@@ -105,6 +106,12 @@ export class UnaryExpression {
     constructor(op, left) {
         Object.assign(this, {op, left})
     }
+}
+
+export class ReturnStatement {
+  constructor(expression) {
+    this.expression = expression
+  }
 }
 
 export class NegExpression {

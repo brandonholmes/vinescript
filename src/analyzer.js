@@ -150,6 +150,8 @@ class Context {
         return s
     }
     FunctionDeclaration(d) {
+        d.returnType = this.analyze(d.returnType)
+        //check(d.returnType).isAType()  
         // Carlos: constructor(name, parameters, returnType, body) {
         // VineScript: constructor(name, parameters, body) {
         // d.returnType = d.returnType ? this.analyze(d.returnType) : Type.VOID
@@ -239,7 +241,11 @@ class Context {
         }
         return e
     }
-    
+    FunctionType(t) {
+      t.parameterTypes = this.analyze(t.parameterTypes)
+      t.returnType = this.analyze(t.returnType)
+      return t
+    }
     Print(e) {
         e.argument = this.analyze(e.argument)
         return e

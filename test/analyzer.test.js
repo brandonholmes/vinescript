@@ -6,14 +6,11 @@ import * as ast from "../src/ast.js"
 const semanticChecks = [
     //["variable declaration", 'lookAtThisGraph int z = 4']
    //,["variable declaration", 'lookAtThisGraph int z = 7'],
-   ["function declaration", `whenLifeGivesYouLemons int myOtherFunction(int x, int y) { print x }`]
+   ["function declaration", `whenLifeGivesYouLemons int myOtherFunction(int x, int y) { x = 7 }`]
 ]
 
 //const semanticErrors = []
 
-/*
-    Bunch of stuff goes here
-*/
 
 describe("The analyzer", () => {
     for (const [scenario, source] of semanticChecks) {

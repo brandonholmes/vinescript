@@ -61,6 +61,10 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   PrimaryExp_paren (_left, statement, _right) {
     return new ast.PrimaryExpression(expression.tree())
   },
+  PrimaryExp_return (_return, expression) {
+    //const returnValue = expression.tree()
+    return new ast.ReturnStatement(expression.tree())
+  },
   FuncCall(calle, _left, args, _right) {
     return new ast.FuncCall(calle.tree(), args.tree())
   },

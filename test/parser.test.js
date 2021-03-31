@@ -13,6 +13,7 @@ const goodPrograms = [
     lookAtThisGraph string a = "test"
     print x
     print a
+    return a
   }`,
   `iAintGunnaStopLovinYou(x < 5) x++`,
   `bitchIhopeTheFuckYouDo(x andIoop y) print 14 / 2 orWhat print 14 * 2`,
