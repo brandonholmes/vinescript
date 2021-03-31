@@ -31,6 +31,8 @@ vinescript  {
                           | strlit
                           | Conditional
                           | truefalse
+                          | return Exp                                     --return
+                          | break
 
 
   
@@ -49,6 +51,8 @@ vinescript  {
   whenLifeGivesYouLemons   = "whenLifeGivesYouLemons"
   iSureHopeItDoes  = "iSureHopeItDoes"
   iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou"
+  thisBitchEmpty   = "thisBitchEmpty"
+  yeet             = "yeet"
   orWhat           = "orWhat"
   youreNotMyDad    = "youreNotMyDad"
   andIoop          = "andIoop"
@@ -56,10 +60,12 @@ vinescript  {
   string           = "string"
   boolean          = "boolean"
   double           = "double"
+  return           = "thisBitchEmpty"
+  break            = "yeet"
   
   keyword     = bitchIhopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
               | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
-              | int | string | boolean | double
+              | int | string | boolean | double | thisBitchEmpty | yeet
 
   id          =  ~keyword letter idrest*
   idrest      =  "_" | letter | digit
