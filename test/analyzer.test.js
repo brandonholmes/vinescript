@@ -4,8 +4,8 @@ import analyze from "../src/analyzer.js";
 import * as ast from "../src/ast.js";
 
 const semanticChecks = [
-  ["variable declaration", "lookAtThisGraph int z = 4"],
-  ["variable declaration", "lookAtThisGraph int z = 7"],
+  ["variable declaration", `lookAtThisGraph int z = 4`],
+  ["variable declaration", `lookAtThisGraph int z = 7`],
   [
     "function declaration",
     `whenLifeGivesYouLemons int myOtherFunction(int x, int y) { x = 7 }`,
@@ -14,13 +14,28 @@ const semanticChecks = [
     "function declaration",
     `whenLifeGivesYouLemons int lemonade(int d, int bb) { d = 34 bb = 35 print d + bb } `,
   ],
+  [
+    "bad types for <=",
+    `whenLifeGivesYouLemons boolean thisFunc(int x) {
+      lookAtThisGraph int x = 2
+      bitchIhopeTheFuckYouDo(x > 1) print 1
+      orWhat 
+      print 3
+      
+    }`,
+  ],
+  ["long if", "if true {print(1)} else {print(3)}"],
+  ["good types for >", `bitchIhopeTheFuckYouDo(x > 1)`],
 ];
-
 const semanticErrors = [
-  ["bad type", "lookAtThisGraph int z = lemonade"],
-  ["", ""],
+  ["bad type", `lookAtThisGraph int z = lemonade`],
+  ["bad type", `lookAtThisGraph String vine = 7`],
+  ["bad type", `lookAtThisGraph Boolean whatsNinePlusTen = 21`],
+  [
+    "return type mismatch",
+    `whenLifeGiveYouLemons int f() {return iSureHopeItDoes}`,
+  ],
 ];
-
 // make int x = lemonade be rejected because types don't match hoe
 
 //const semanticErrors = []
