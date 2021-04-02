@@ -198,16 +198,15 @@ class Context {
   }
   Parameter(p) {
     p.type = this.analyze(p.type);
-    //check(p.type).isAType()
+    check(p.type).isAType()
     this.add(p.name, p);
     return p;
   }
   VariableDeclaration(d) {
     // Declarations generate brand new variable objects
     d.expression = this.analyze(d.expression);
-    d.name = new Variable(d.name, d.readOnly);
-    d.name.type = d.name.type;
-    this.add(d.name.name, d.expression);
+    d.variable.type = d.expression.type;
+    this.add(d.variable.name, d.variable);
     return d;
   }
   Variable(d) {

@@ -4,41 +4,60 @@ import analyze from "../src/analyzer.js";
 import * as ast from "../src/ast.js";
 
 const semanticChecks = [
-  ["variable declaration", `lookAtThisGraph int z = 4`],
-  ["variable declaration", `lookAtThisGraph int z = 7`],
+  ["1.variable declaration", `lookAtThisGraph z = 4`],
+  ["2.variable declaration", `lookAtThisGraph z = 7`],
   [
-    "function declaration",
+    "3.function declaration",
     `whenLifeGivesYouLemons int myOtherFunction(int x, int y) { x = 7 }`,
   ],
   [
-    "function declaration",
+    "4.function declaration",
     `whenLifeGivesYouLemons int lemonade(int d, int bb) { d = 34 bb = 35 print d + bb } `,
   ],
   [
-    "bad types for <=",
-    `whenLifeGivesYouLemons boolean thisFunc(int x) {
-      lookAtThisGraph int x = 2
-      bitchIhopeTheFuckYouDo(x > 1) print 1
-      orWhat 
-      print 3
-      
-    }`,
+    "12.printing a int is valid",
+    `lookAtThisGraph myInt = 7
+     print myInt`
   ],
-  ["long if", "if true {print(1)} else {print(3)}"],
-  ["good types for >", `bitchIhopeTheFuckYouDo(x > 1)`],
-];
-const semanticErrors = [
-  ["bad type", `lookAtThisGraph int z = lemonade`],
-  ["bad type", `lookAtThisGraph String vine = 7`],
-  ["bad type", `lookAtThisGraph Boolean whatsNinePlusTen = 21`],
-  [
-    "return type mismatch",
-    `whenLifeGiveYouLemons int f() {return iSureHopeItDoes}`,
-  ],
-];
-// make int x = lemonade be rejected because types don't match hoe
+  
+// make sure
+// return a variable of each type
+// break and return statement works for returning an expression and not just a singular value
+//properly recognizes conditional (if else)
+// also check that it recognizes inequalities (or's and ands) and doesnt allow comparing a number and a string, and a boolean and a number
 
-//const semanticErrors = []
+  //if (true) console.log(1) else console.log(3)
+  ["recognizes a conditional", `bitchIhopeTheFuckYouDo (iSureHopeItDoes) print 1 orWhat print 3`],
+  ["7.good types for >", 
+  ` lookAtThisGraph x = 7
+    bitchIhopeTheFuckYouDo(x > 1) print 1 orWhat print 3`]
+]; 
+/*
+const semanticErrors = [
+  [
+    "5.recognizes attempt to shadow",
+    `whenLifeGivesYouLemons thisFunc(int x) {
+      lookAtThisGraph x = 2
+      return x
+    }`,
+    /Identifier x already declared/
+  ],
+  ["8.bad type", `lookAtThisGraph z = lemonade`, /cannot assign string to value int/],
+  ["9.bad type", `lookAtThisGraph vine = 7`, /cannot assign int to value string/],
+  ["10.bad type", `lookAtThisGraph whatsNinePlusTen = 21`, /cannot assign int to value boolean/],
+  [
+    "11.return type mismatch",
+    `whenLifeGiveYouLemons int f() {return iSureHopeItDoes}`,
+    /expected int, returned boolean/
+  ],
+  ["6.declares a boolean", 
+  `lookAtThisGraph myBoolean = thatIsNotCorrect
+  myBoolean = 7`,
+  /cannot assign int to type boolean/
+  ],
+];
+*/
+// make int x = lemonade be rejected because types don't match hoe
 
 describe("The analyzer", () => {
   for (const [scenario, source] of semanticChecks) {
@@ -47,11 +66,11 @@ describe("The analyzer", () => {
     });
   }
   //NOTE: took out "errorMessagePattern" from the parameters and might actually need it sooooooo LMK?
-  for (const [scenario, source] of semanticErrors) {
+ /* for (const [scenario, source, errorMessagePattern] of semanticErrors) {
     it(`throws on ${scenario}`, () => {
-      assert.throws(() => analyze(parse(source)));
+      assert.throws(() => analyze(parse(source)), errorMessagePattern);
     });
-  }
+  } */
   /*//////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////I don't think this is applicable to our language
     for (const [scenario, source, graph] of graphChecks) {

@@ -11,8 +11,12 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   Function(_whenLifeGivesYouLemons, type, name, _left, params, _right, _open, body, _close) {
     return new ast.FunctionDeclaration(type.tree(), name.sourceString, params.tree(), body.tree());
   },
-  Variable(_lookAtThisGraph, type, name, _equal, expression) {
-    return new ast.VariableDeclaration(type.tree(), name.souceString, expression.tree());
+  Variable(lookAtThisGraphConst, id, _equal, expression) {
+    const [name, readOnly] = [id.sourceString, lookAtThisGraphConst.sourceString == "const"]
+    return new ast.VariableDeclaration(
+      new ast.Variable(name, readOnly),
+      expression.tree()
+    )
   },
   Params(paramList) {
     return paramList.asIteration().tree();

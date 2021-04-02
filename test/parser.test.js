@@ -2,15 +2,15 @@ import assert from "assert";
 import parse from "../src/parser.js";
 
 const goodPrograms = [
-  `lookAtThisGraph int x = 5`,
+  `lookAtThisGraph x = 5`,
   `whenLifeGivesYouLemons int myFunction(int y) {
-        lookAtThisGraph int x = 5 
+        lookAtThisGraph x = 5 
         print x
       }
     myFunction(x)`,
   `whenLifeGivesYouLemons int myOtherFunction(int x, int y) {
-    lookAtThisGraph int z = x - y
-    lookAtThisGraph string a = "test"
+    lookAtThisGraph z = x - y
+    lookAtThisGraph a = "test"
     print x
     print a
     return a
@@ -23,13 +23,13 @@ const goodPrograms = [
 const badPrograms = [
   `whenLifeGivesYouLemons int myFunction(params) {lookAtThisGraph x = 5}`,
   `whenLifeGivesYouLemons myFunction(y) {
-    lookAtThisGraph int x = 5 
+    lookAtThisGraph x = 5 
     print x
   }
   myFunction(x)`,
   `whenLifeGivesYouLemons myOtherFunction(x, y) {
-    lookAtThisGraph int z = x - y
-    lookAtThisGraph string a = "test"
+    lookAtThisGraph z = x - y
+    lookAtThisGraph a = "test"
     print x
     print a
   }`,

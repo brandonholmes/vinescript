@@ -71,15 +71,15 @@ export class Parameter {
 
 //VariableDeclaration(_lookAtThisGraph, type, name, _equal, expressions)
 export class VariableDeclaration {
-  constructor(type, name, expression) {
-    Object.assign(this, { type, name, expression });
+  constructor(variable, expression) {
+    Object.assign(this, { variable, expression });
   }
 }
 
 // Created during semantic analysis only!
 export class Variable {
-  constructor(name) {
-    Object.assign(this, { name });
+  constructor(name, readOnly) {
+    Object.assign(this, { name, readOnly });
   }
 }
 

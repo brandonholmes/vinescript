@@ -6,7 +6,7 @@ vinescript  {
   Params                  = ListOf<Param, ",">
   Param                   = type id
   Body                    = Statement*
-  Variable                = lookAtThisGraph type id "=" Exp
+  Variable                = (lookAtThisGraph | const) id "=" Exp
   Assignment              = id "=" Exp
   Print                   = print Exp
   FuncCall                = ~keyword id "(" ListOf<id, ","> ")"
@@ -30,22 +30,24 @@ vinescript  {
                           | numlit
                           | strlit
                           | Conditional
-                          | truefalse
+                          | true
+                          | false
                           | return Exp                                     --return
                           | break
 
+  true                    = "iSureHopeItDoes"
+  false                   = "thatIsNotCorrect"
 
-  
+  boollit                 =  true | false
   numlit                  = "-"? digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
   print                   = "print" ~alnum
   space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
   indecop 	              =  "++" | "--"
-  type             = int | string | boolean | double
+  type             		  = int | string | boolean | double
 
-  
-  truefalse        = iSureHopeItDoes | thatIsNotCorrect
   lookAtThisGraph  = "lookAtThisGraph"
+  const            = "const"
   thatIsNotCorrect = "thatIsNotCorrect"
   bitchIhopeTheFuckYouDo = "bitchIhopeTheFuckYouDo"
   whenLifeGivesYouLemons   = "whenLifeGivesYouLemons"
@@ -65,7 +67,7 @@ vinescript  {
   
   keyword     = bitchIhopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
               | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
-              | int | string | boolean | double | thisBitchEmpty | yeet
+              | int | string | boolean | double | thisBitchEmpty | yeet | const
 
   id          =  ~keyword letter idrest*
   idrest      =  "_" | letter | digit
