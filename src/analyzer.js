@@ -51,7 +51,9 @@ const check = (self) => ({
     must(self.type.constructor === ArrayType, "Array expected");
   },
   hasSameTypeAs(other) {
-    must(
+    console.log(`self type: ${self}`);
+    console.log(`other type: ${other}`);
+    must(  
       self.type.isEquivalentTo(other.type),
       "Operands do not have the same type"
     );
@@ -209,19 +211,17 @@ class Context {
     this.add(d.variable.name, d.variable);
     return d;
   }
-  Variable(d) {
+  /*Variable(d) {
     // Declarations generate brand new variable objects
     d.expression = this.analyze(d.expression);
     d.variable = new Variable(d.name);
     d.variable.type = d.expression.type;
     this.add(d.variable.name, d.variable);
     return d;
-  }
+  }*/
   Assignment(s) {
     s.source = this.analyze(s.source);
     s.target = this.analyze(s.target);
-    //console.log(`source is: ${s.source}`);
-    `target is: ${s.target.type}`;
     check(s.source).isAssignableTo(s.target.type);
     check(s.target).isNotReadOnly();
     return s;

@@ -27,18 +27,17 @@ vinescript  {
   PrimaryExp              = 
                           | "(" Statement ")"                             --paren
                           | id
+                          | boollit
                           | numlit
                           | strlit
                           | Conditional
-                          | true
-                          | false
                           | return Exp                                     --return
                           | break
 
+  boollit                 =  true | false
   true                    = "iSureHopeItDoes"
   false                   = "thatIsNotCorrect"
-
-  boollit                 =  true | false
+  
   numlit                  = "-"? digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
   print                   = "print" ~alnum
