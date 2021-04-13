@@ -1,5 +1,5 @@
-import assert from "assert";
-import parse from "../src/parser.js";
+import assert from 'assert';
+import parse from '../src/parser.js';
 
 const goodPrograms = [
   `lookAtThisGraph x = 5`,
@@ -18,6 +18,24 @@ const goodPrograms = [
   `iAintGunnaStopLovinYou(x < 5) x++`,
   `bitchIhopeTheFuckYouDo(x andIoop y) print 14 / 2 orWhat print 14 * 2`,
   `bitchIhopeTheFuckYouDo(x > 5) x = 7 orWhat x = -7`,
+  `lookAtThisGraph greeting = "Hello World"
+    print greeting`,
+  `whenLifeGivesYouLemons int fibonacci(int n) {
+       bitchIhopeTheFuckYouDo(n == 0) 
+           thisBitchEmpty 0
+       orWhat
+           lookAtThisGraph x = 0
+           lookAtThisGraph y = 1
+           lookAtThisGraph i = 1
+           iAintGunnaStopLovinYou(i < n)
+               lookAtThisGraph z = x + y
+               x = y
+               y = z
+           thisBitchEmpty y
+
+    }
+    lookAtThisGraph times = 10
+    fibonacci(times)`,
 ];
 
 const badPrograms = [
@@ -39,7 +57,7 @@ const badPrograms = [
   `print )`,
 ];
 
-describe("The parser", () => {
+describe('The parser', () => {
   for (const program of goodPrograms) {
     it(`recognizes good programs`, () => {
       assert.ok(parse(program));
