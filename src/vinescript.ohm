@@ -11,7 +11,7 @@ vinescript  {
   Print                   = print Exp
   FuncCall                = ~keyword id "(" ListOf<id, ","> ")"
   WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" Statement+
-  Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ "orWhat" Statement+
+  Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
   
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
