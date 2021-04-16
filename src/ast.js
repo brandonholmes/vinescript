@@ -1,5 +1,5 @@
 import util from 'util';
-//ALL OUR CLASSES GO HERE
+
 export class Program {
   constructor(statements) {
     this.statements = statements;
@@ -14,10 +14,10 @@ export class Type {
     this.name = name;
   }
 
+  static DOUBLE = new Type('double');
   static BOOLEAN = new Type('boolean');
   static INT = new Type('int');
   static STRING = new Type('string');
-  static DOUBLE = new Type('double');
 
   isEquivalentTo(target) {
     return this == target;
@@ -29,8 +29,6 @@ export class Type {
 }
 
 export class FunctionType extends Type {
-  // Carlos: (boolean,[string]?)->float
-  // Vinescript: (int, int)->int
   constructor(parameterTypes, returnType) {
     super(`(${parameterTypes.map(t => t.name).join(',')})->${returnType.name}`);
     Object.assign(this, { parameterTypes, returnType });
@@ -50,16 +48,14 @@ export class WhileLoop {
 }
 
 export class FunctionDeclaration {
-  constructor(returnType, name, parameters, body) {
-    Object.assign(this, { returnType, name, parameters, body });
+  constructor(header, body) {
+    Object.assign(this, { header, body })
   }
 }
 
-// Created during semantic analysis only!
 export class Function {
-  constructor(name) {
-    this.name = name;
-    // Other properties set after construction
+  constructor(name, parameters, returnType) {
+    Object.assign(this, { name, parameters, returnType })
   }
 }
 
@@ -113,6 +109,10 @@ export class ReturnStatement {
   }
 }
 
+export class BreakStatement {
+  //intentionally empty
+}
+
 export class NegExpression {
   constructor(op, left) {
     Object.assign(this, { op, left });
@@ -138,8 +138,8 @@ export class IdentifierExpression {
 }
 
 export class FuncCall {
-  constructor(calle, args) {
-    Object.assign(this, { calle, args });
+  constructor(callee, args) {
+    Object.assign(this, { callee, args });
   }
 }
 /*

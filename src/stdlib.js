@@ -1,9 +1,5 @@
 import { Type, Variable, Function } from './ast.js';
 
-function makeConstant(name, type, value) {
-  return Object.assign(new Variable(name, true), { type, value });
-}
-
 function makeFunction(name, type) {
   return Object.assign(new Function(name), { type });
 }

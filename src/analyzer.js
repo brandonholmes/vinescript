@@ -11,6 +11,8 @@ import {
 } from "./ast.js";
 import * as stdlib from "./stdlib.js";
 import util from "util";
+import { Console } from "console";
+import { lookup } from "dns";
 
 function must(condition, errorMessage) {
   if (!condition) {
@@ -51,8 +53,6 @@ const check = (self) => ({
     must(self.type.constructor === ArrayType, "Array expected");
   },
   hasSameTypeAs(other) {
-    console.log(`self type: ${self}`);
-    console.log(`other type: ${other}`);
     must(  
       self.type.isEquivalentTo(other.type),
       "Operands do not have the same type"
@@ -66,7 +66,7 @@ const check = (self) => ({
   },
   isAssignableTo(type) {
     must(
-      type == Type.ANY || self.type.isAssignableTo(type),
+      self.type.isAssignableTo(type),
       `Cannot assign a ${self.type.name} to a ${type.name}`
     );
   },
@@ -82,12 +82,14 @@ const check = (self) => ({
   isInTheOBject(object) {
     must(object.type.fields.map((f) => f.name).includes(self), "No such field");
   },
-  //isInsideALoop <-- I don't think we need this cuz we don't have a break?
+  isInsideALoop() {
+    must(self.inLoop, "Break can only appear in a loop")
+  },
   isInsideAFunction(context) {
     must(self.function, "Return can only appear in a function");
   },
   isCallable() {
-    must(self.constructor === FunctionType, "Call of non-function"); // do we need this since we don't have function type?
+    must(self.constructor.name === 'FunctionDeclaration', "Call of non-function"); // do we need this since we don't have function type?
   },
   returnsNothing() {
     must(
@@ -108,8 +110,8 @@ const check = (self) => ({
     );
     targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type));
   },
-  matchParametersOf(calleeType) {
-    check(self).match(calleeType.parameterTypes);
+  matchParametersOf(callee) {    
+    check(self).match(callee.header.parameters);
   },
   matchFieldsOf(structType) {
     check(self).match(structType.fields.map((f) => f.type));
@@ -118,21 +120,15 @@ const check = (self) => ({
 
 class Context {
   constructor(parent = null, configuration = {}) {
-    // Parent (enclosing scope) for static scope analysis
     this.parent = parent;
-    // All local declarations. Names map to variable declarations, types, and
-    // function declarations
     this.locals = new Map();
-    // Whether we are in a function, so that we know whether a return
-    // statement can appear here, and if so, how we typecheck it
+    this.inLoop = configuration.inLoop ?? parent?.inLoop ?? false;
     this.function = configuration.forFunction ?? parent?.function ?? null;
   }
   sees(name) {
-    // Search "outward" through enclosing scopes
     return this.locals.has(name) || this.parent?.sees(name);
   }
   add(name, entity) {
-    // No shadowing! Prevent addition if id anywhere in scope chain!
     if (this.sees(name)) {
       throw new Error(`Identifier ${name} already declared`);
     }
@@ -148,8 +144,6 @@ class Context {
     throw new Error(`Identifier ${name} not declared`);
   }
   newChild(configuration = {}) {
-    // Create new (nested) context, which is just like the current context
-    // except that certain fields can be overridden
     return new Context(this, configuration);
   }
   analyze(node) {
@@ -159,143 +153,104 @@ class Context {
     p.statements = this.analyze(p.statements);
     return p;
   }
-  Conditional(e) {
-    e.expression = this.analyze(e.expression);
-    check(e.expression).isBoolean();
-    e.statements = this.analyze(e.statements);
-    e.elseStatements = this.analyze(e.elseStatements);
-    check(e.statements).hasSameTypeAs(e.elseStatements);
-    e.type = e.statements.type;
-    return e;
+  Array(a) {
+    return a.map(item => this.analyze(item));
   }
-  WhileLoop(s) {
-    s.expression = this.analyze(s.expression);
-    check(s.expression).isBoolean();
-    s.body = this.newChild({ inLoop: true }).analyze(s.body);
-    return s;
+  VariableDeclaration(v) {
+    v.expression = this.analyze(v.expression);
+    v.variable.type = v.expression.type;
+    this.add(v.variable.name, v.variable);
+    return v;
   }
-  Type(t) {
-    return t;
-  }
-  FunctionDeclaration(d) {
-    d.returnType = this.analyze(d.returnType);
-    //check(d.returnType).isAType()
-    // Carlos: constructor(name, parameters, returnType, body) {
-    // VineScript: constructor(name, parameters, body) {
-    // d.returnType = d.returnType ? this.analyze(d.returnType) : Type.VOID
-    // Declarations generate brand new function objects
-    const f = (d.function = new Function(d.name));
-    // When entering a function body, we must reset the inLoop setting,
-    // because it is possible to declare a function inside a loop!
-    const childContext = this.newChild({ inLoop: false, forFunction: f });
-    d.parameters = childContext.analyze(d.parameters);
-    f.type = new FunctionType(
-      d.parameters.map((p) => p.type),
-      d.returnType
-    );
-    // Add before analyzing the body to allow recursion
-    this.add(f.name, f);
-    d.body = childContext.analyze(d.body);
-    return d;
+  FunctionDeclaration(f) {
+    check(f.header.returnType).isAType();
+    const childContext = this.newChild({ inLoop: false, forFunction: f.header })
+    f.header.parameters = childContext.analyze(f.header.parameters)
+    f.header.type = new FunctionType(
+      f.header.parameters.map(p => p.type),
+      f.header.returnType
+    )
+    this.add(f.header.name, f)
+    f.body = childContext.analyze(f.body);
+    return f;
   }
   Parameter(p) {
-    p.type = this.analyze(p.type);
+    p.type = this.analyze(p.type)
     check(p.type).isAType()
-    this.add(p.name, p);
+    this.add(p.name, p)
     return p;
   }
-  VariableDeclaration(d) {
-    // Declarations generate brand new variable objects
-    d.expression = this.analyze(d.expression);
-    d.variable.type = d.expression.type;
-    this.add(d.variable.name, d.variable);
-    return d;
-  }
-  /*Variable(d) {
-    // Declarations generate brand new variable objects
-    d.expression = this.analyze(d.expression);
-    d.variable = new Variable(d.name);
-    d.variable.type = d.expression.type;
-    this.add(d.variable.name, d.variable);
-    return d;
-  }*/
-  Assignment(s) {
-    s.source = this.analyze(s.source);
-    s.target = this.analyze(s.target);
-    check(s.source).isAssignableTo(s.target.type);
-    check(s.target).isNotReadOnly();
-    return s;
-  }
-  BinaryExpression(e) {
-    e.left = this.analyze(e.left);
-    e.right = this.analyze(e.right);
-    if (["&", "|", "^", "<<", ">>"].includes(e.op)) {
-      check(e.left).isInteger();
-      check(e.right).isInteger();
-      e.type = Type.INT;
-    } else if (["+"].includes(e.op)) {
-      check(e.left).isNumericOrString();
-      check(e.left).hasSameTypeAs(e.right);
-      e.type = e.left.type;
-    } else if (["-", "*", "/", "%", "**"].includes(e.op)) {
-      check(e.left).isNumeric();
-      check(e.left).hasSameTypeAs(e.right);
-      e.type = e.left.type;
-    } else if (["<", "<=", ">", ">="].includes(e.op)) {
-      check(e.left).isNumericOrString();
-      check(e.left).hasSameTypeAs(e.right);
-      e.type = Type.BOOLEAN;
-    } else if (["==", "!="].includes(e.op)) {
-      check(e.left).hasSameTypeAs(e.right);
-      e.type = Type.BOOLEAN;
-    }
-    return e;
-  }
-  UnaryExpression(e) {
-    e.left = this.analyze(e.left);
-    if (e.op === "#") {
-      check(e.left).isAnArray();
-      e.type = Type.INT;
-    } else if (e.op === "-") {
-      check(e.left).isNumeric();
-      e.type = e.left.type;
-    } else if (e.op === "!") {
-      check(e.left).isBoolean();
-      e.type = Type.BOOLEAN;
-    } else {
-      // Operator is "some"
-      //e.type = new OptionalType(e.left.type)
-    }
-    return e;
-  }
-  FunctionType(t) {
-    t.parameterTypes = this.analyze(t.parameterTypes);
-    t.returnType = this.analyze(t.returnType);
-    return t;
-  }
-  Print(e) {
-    e.argument = this.analyze(e.argument);
-    return e;
-  }
-  FuncCall(c) {
-    c.callee = this.analyze(c.callee);
-    check(c.callee).isCallable();
-    c.args = this.analyze(c.args);
-    // if (c.callee.constructor === StructDeclaration) {
-    //   check(c.args).matchFieldsOf(c.callee)
-    //   c.type = c.callee // weird but seems ok for now
-    // } else {
-    //   check(c.args).matchParametersOf(c.callee.type)
-    //   c.type = c.callee.type.returnType
-    // }
-    return c;
-  }
-  Array(a) {
-    return a.map((item) => this.analyze(item));
+  Assignment(a) {
+    a.source = this.analyze(a.source);
+    a.target = this.analyze(a.target);
+    check(a.source).isAssignableTo(a.target.type);
+    check(a.source).isNotReadOnly();
+    return a;
   }
   IdentifierExpression(e) {
-    // Id expressions get "replaced" with the entities they refer to.
-    return this.lookup(e.name);
+    e = this.lookup(e.name);
+    return e
+  }
+  Print(p) {
+    p.argument = this.analyze(p.argument);
+    return p;
+  }
+  BinaryExpression(b) {
+    b.left = this.analyze(b.left)
+    b.right = this.analyze(b.right)
+    if (["+", "-", "*", "/", "%", "**"].includes(b.op)) {
+      check(b.left).isNumeric()
+      check(b.left).hasSameTypeAs(b.right)
+      b.type = b.left.type
+    }
+    else if(["<=", ">=", "<", ">"].includes(b.op) ) {
+      check(b.left).isNumericOrString()
+      check(b.left).hasSameTypeAs(b.right)
+      b.type = Type.BOOLEAN
+    }
+    else if(["==", "!="].includes(b.op) ) {
+      check(b.left).hasSameTypeAs(b.right)
+      b.type = Type.BOOLEAN
+    }
+    return b;
+  }
+  Conditional(c) {
+    c.expression = this.analyze(c.expression)
+    check(c.expression).isBoolean
+    c.statements = this.newChild().analyze(c.statements)
+    if (c.elseStatements.constructor === Array) {
+      c.elseStatements = this.newChild().analyze(c.elseStatements)
+    } else if (s.elseStatements) {
+      c.elseStatements = this.analyze(c.elseStatements)
+    }
+    return c
+  }
+  ReturnStatement(r) {
+    check(this).isInsideAFunction()
+    r.expression = this.analyze(r.expression)
+    check(r.expression).isReturnableFrom(this.function)
+    return r;
+  }
+  BreakStatement(b) {
+    check(this).isInsideALoop()
+    return b;
+  }
+  WhileLoop (w) {
+    w.expression = this.analyze(w.expression)
+    check(w.expression).isBoolean()
+    w.body = this.newChild({ inLoop: true }).analyze(w.body)
+    return w
+  }
+  FuncCall(c) {
+    c.callee = this.analyze(c.callee)
+    check(c.callee).isCallable()
+    c.args = this.analyze(c.args)
+    check(c.args).matchParametersOf(c.callee)
+    c.type = c.callee.type.returnType
+    return c
+  }
+  Type(t) {
+    return t
   }
   Number(e) {
     return e;

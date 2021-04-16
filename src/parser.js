@@ -9,7 +9,14 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return new ast.Program(statements.tree());
   },
   Function(_whenLifeGivesYouLemons, type, name, _left, params, _right, _open, body, _close) {
-    return new ast.FunctionDeclaration(type.tree(), name.sourceString, params.tree(), body.tree());
+    return new ast.FunctionDeclaration(
+      new ast.Function(
+        name.sourceString,
+        params.asIteration().tree(),
+        type.tree()
+      ),
+      body.tree()
+    )
   },
   Variable(lookAtThisGraphConst, id, _equal, expression) {
     const [name, readOnly] = [id.sourceString, lookAtThisGraphConst.sourceString == "const"]
@@ -30,7 +37,7 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   Print(_print, argument) {
     return new ast.Print(argument.tree());
   },
-  WhileLoop(_iAintGunnaStopLovinYou, _left, expressions, _right, body) {
+  WhileLoop(_iAintGunnaStopLovinYou, _left, expressions, _right, _open, body, _close) {
     return new ast.WhileLoop(expressions.tree(), body.tree());
   },
   Conditional(
@@ -66,14 +73,17 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return new ast.NegExpression(_neg.tree(), expression.tree())
   },*/,
   PrimaryExp_paren(_left, statement, _right) {
-    return new ast.PrimaryExpression(expression.tree());
+    return statement.tree();
   },
   PrimaryExp_return(_return, expression) {
     //const returnValue = expression.tree()
     return new ast.ReturnStatement(expression.tree());
   },
-  FuncCall(calle, _left, args, _right) {
-    return new ast.FuncCall(calle.tree(), args.tree());
+  PrimaryExp_break(_break) {
+    return new ast.BreakStatement()
+  },
+  FuncCall(callee, _left, args, _right) {
+    return new ast.FuncCall(callee.tree(), args.tree());
   },
   NonemptyListOf(first, _, rest) {
     return [first.tree(), ...rest.tree()];

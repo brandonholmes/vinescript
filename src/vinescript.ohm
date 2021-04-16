@@ -10,7 +10,7 @@ vinescript  {
   Assignment              = id "=" Exp
   Print                   = print Exp
   FuncCall                = ~keyword id "(" ListOf<id, ","> ")"
-  WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" Statement+
+  WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" "{" Statement+ "}"
   Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
   
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
@@ -32,7 +32,7 @@ vinescript  {
                           | strlit
                           | Conditional
                           | return Exp                                     --return
-                          | break
+                          | break                                           --break
 
   boollit                 =  true | false
   true                    = "iSureHopeItDoes"
@@ -43,7 +43,7 @@ vinescript  {
   print                   = "print" ~alnum
   space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
   indecop 	              =  "++" | "--"
-  type             		  = int | string | boolean | double
+  type             		    = boolean | double | int | string
 
   lookAtThisGraph  = "lookAtThisGraph"
   const            = "const"

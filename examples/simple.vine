@@ -1,7 +1,4 @@
-whenLifeGivesYouLemons int myOtherFunction(int x, int y) {
-  lookAtThisGraph int z = x - y
-  lookAtThisGraph string a = "test"
-  print x
-  print a
-  thisBitchEmpty x
+whenLifeGivesYouLemons int myFunc(int y) {
+    thisBitchEmpty 7
 }
+myFunc(x)
