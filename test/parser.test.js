@@ -15,7 +15,7 @@ const goodPrograms = [
     print a
     return a
   }`,
-  `iAintGunnaStopLovinYou(x < 5) x++`,
+  `iAintGunnaStopLovinYou(x < 5) { x++ }`,
   `bitchIhopeTheFuckYouDo(x andIoop y) print 14 / 2 orWhat print 14 * 2`,
   `bitchIhopeTheFuckYouDo(x > 5) x = 7 orWhat x = -7`,
   `lookAtThisGraph greeting = "Hello World"
@@ -27,10 +27,11 @@ const goodPrograms = [
            lookAtThisGraph x = 0
            lookAtThisGraph y = 1
            lookAtThisGraph i = 1
-           iAintGunnaStopLovinYou(i < n)
+           iAintGunnaStopLovinYou(i < n) {
                lookAtThisGraph z = x + y
                x = y
                y = z
+           }
            thisBitchEmpty y
 
     }
