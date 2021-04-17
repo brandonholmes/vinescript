@@ -111,7 +111,7 @@ const check = (self) => ({
     targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type));
   },
   matchParametersOf(callee) {    
-    check(self).match(callee.header.parameters);
+    check(self).match(callee.header.parameters.map((p) => p.type));
   },
   matchFieldsOf(structType) {
     check(self).match(structType.fields.map((f) => f.type));
@@ -242,12 +242,12 @@ class Context {
     return w
   }
   FuncCall(c) {
-    c.callee = this.analyze(c.callee)
-    check(c.callee).isCallable()
-    c.args = this.analyze(c.args)
-    check(c.args).matchParametersOf(c.callee)
-    c.type = c.callee.type.returnType
-    return c
+    c.callee = this.analyze(c.callee);
+    check(c.callee).isCallable();
+    c.args = this.analyze(c.args);
+    check(c.args).matchParametersOf(c.callee);
+    c.type = c.callee.header.returnType;
+    return c;
   }
   Type(t) {
     return t

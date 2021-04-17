@@ -9,7 +9,7 @@ vinescript  {
   Variable                = (lookAtThisGraph | const) id "=" Exp
   Assignment              = id "=" Exp
   Print                   = print Exp
-  FuncCall                = ~keyword id "(" ListOf<id, ","> ")"
+  FuncCall                = ~keyword id "(" ListOf<Exp, ","> ")"
   WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" "{" Statement+ "}"
   Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
   
