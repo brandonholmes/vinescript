@@ -82,10 +82,11 @@ whenLifeGivesYouLemons int fibonacci(int n) {
         lookAtThisGraph x = 0
         lookAtThisGraph y = 1
         lookAtThisGraph i = 1
-        iAintGunnaStopLovinYou(i < n)
+        iAintGunnaStopLovinYou(i < n) {
             lookAtThisGraph z = x + y
             x = y
             y = z
+        }
         thisBitchEmpty y
 
 }
