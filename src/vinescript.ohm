@@ -12,7 +12,7 @@ vinescript  {
   FuncCall                = ~keyword id "(" ListOf<Exp, ","> ")"
   WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" "{" Statement+ "}"
   Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
-  
+
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
                           | LogExp
@@ -24,20 +24,18 @@ vinescript  {
                           | NegExp
   NegExp                  = PrimaryExp
                           | youreNotMyDad? PrimaryExp                     --negation
-  PrimaryExp              = 
+  PrimaryExp              =
                           | "(" Statement ")"                             --paren
-                          | id
                           | boollit
+                          | id
                           | numlit
                           | strlit
                           | Conditional
                           | return Exp                                     --return
                           | break                                           --break
 
-  boollit                 =  true | false
-  true                    = "iSureHopeItDoes"
-  false                   = "thatIsNotCorrect"
-  
+  boollit                 =  iSureHopeItDoes | thatIsNotCorrect
+
   numlit                  = "-"? digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
   print                   = "print" ~alnum
@@ -63,8 +61,8 @@ vinescript  {
   double           = "double"
   return           = "thisBitchEmpty"
   break            = "yeet"
-  
-  keyword     = bitchIhopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print 
+
+  keyword     = bitchIhopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print
               | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
               | int | string | boolean | double | thisBitchEmpty | yeet | const
 

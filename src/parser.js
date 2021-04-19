@@ -10,20 +10,13 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   },
   Function(_whenLifeGivesYouLemons, type, name, _left, params, _right, _open, body, _close) {
     return new ast.FunctionDeclaration(
-      new ast.Function(
-        name.sourceString,
-        params.asIteration().tree(),
-        type.tree()
-      ),
+      new ast.Function(name.sourceString, params.asIteration().tree(), type.tree()),
       body.tree()
-    )
+    );
   },
   Variable(lookAtThisGraphConst, id, _equal, expression) {
-    const [name, readOnly] = [id.sourceString, lookAtThisGraphConst.sourceString == "const"]
-    return new ast.VariableDeclaration(
-      new ast.Variable(name, readOnly),
-      expression.tree()
-    )
+    const [name, readOnly] = [id.sourceString, lookAtThisGraphConst.sourceString == 'const'];
+    return new ast.VariableDeclaration(new ast.Variable(name, readOnly), expression.tree());
   },
   Params(paramList) {
     return paramList.asIteration().tree();
@@ -80,7 +73,7 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return new ast.ReturnStatement(expression.tree());
   },
   PrimaryExp_break(_break) {
-    return new ast.BreakStatement()
+    return new ast.BreakStatement();
   },
   FuncCall(callee, _left, args, _right) {
     return new ast.FuncCall(callee.tree(), args.tree());
@@ -107,7 +100,13 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return strlit.sourceString;
   },
   numlit(_neg, _digits, _dot, _decimals, _carrot, _exponents) {
-    return Number(this.sourceString);
+    return this.sourceString.includes('.') ? Number(this.sourceString) : BigInt(this.sourceString);
+  },
+  iSureHopeItDoes(_) {
+    return true;
+  },
+  thatIsNotCorrect(_) {
+    return false;
   },
   _terminal() {
     return this.sourceString;

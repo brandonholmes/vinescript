@@ -8,11 +8,11 @@ import {
   Print,
   BinaryExpression,
   Type,
-} from "./ast.js";
-import * as stdlib from "./stdlib.js";
-import util from "util";
-import { Console } from "console";
-import { lookup } from "dns";
+} from './ast.js';
+import * as stdlib from './stdlib.js';
+import util from 'util';
+import { Console } from 'console';
+import { lookup } from 'dns';
 
 function must(condition, errorMessage) {
   if (!condition) {
@@ -20,85 +20,64 @@ function must(condition, errorMessage) {
   }
 }
 
-const check = (self) => ({
+const check = self => ({
   isNumeric() {
-    must(
-      [Type.INT, Type.FLOAT].includes(self.type),
-      `Expected a number, found ${self.type.name}`
-    );
+    must([Type.INT, Type.DOUBLE].includes(self.type), `Expected a number, found ${self.type.name}`);
   },
   isNumericOrString() {
     must(
-      [Type.INT, Type.FLOAT, Type.STRING].includes(self.type),
+      [Type.INT, Type.DOUBLE, Type.STRING].includes(self.type),
       `Expected a number or string, found ${self.type.name}`
     );
   },
   isBoolean() {
-    must(
-      self.type === Type.BOOLEAN,
-      `Expected a boolean, found ${self.type.name}`
-    );
+    must(self.type === Type.BOOLEAN, `Expected a boolean, found ${self.type.name}`);
   },
   isInteger() {
-    must(
-      self.type === Type.INT,
-      `Expected an integer, found ${self.type.name}`
-    );
+    must(self.type === Type.INT, `Expected an integer, found ${self.type.name}`);
   },
   isAType() {
-    must(self instanceof Type, "Type expected");
+    must(self instanceof Type, 'Type expected');
   },
   //isAnOptional <-- I don't think we need this since we don't have optionals?
   isAnArray() {
-    must(self.type.constructor === ArrayType, "Array expected");
+    must(self.type.constructor === ArrayType, 'Array expected');
   },
   hasSameTypeAs(other) {
-    must(  
-      self.type.isEquivalentTo(other.type),
-      "Operands do not have the same type"
-    );
+    must(self.type.isEquivalentTo(other.type), 'Operands do not have the same type');
   },
   allHaveSameType() {
     must(
-      self.slice(1).every((e) => e.type === self[0].type),
-      "Not all elements have the same type"
+      self.slice(1).every(e => e.type === self[0].type),
+      'Not all elements have the same type'
     );
   },
   isAssignableTo(type) {
-    must(
-      self.type.isAssignableTo(type),
-      `Cannot assign a ${self.type.name} to a ${type.name}`
-    );
+    must(self.type.isAssignableTo(type), `Cannot assign a ${self.type.name} to a ${type.name}`);
   },
   isNotReadOnly() {
     must(!self.readOnly, `Cannot assign to constant ${self.name}`);
   },
   areAllDistinct() {
-    must(
-      new Set(self.map((f) => f.name)).size === self.length,
-      "Fields must be distinct"
-    );
+    must(new Set(self.map(f => f.name)).size === self.length, 'Fields must be distinct');
   },
   isInTheOBject(object) {
-    must(object.type.fields.map((f) => f.name).includes(self), "No such field");
+    must(object.type.fields.map(f => f.name).includes(self), 'No such field');
   },
   isInsideALoop() {
-    must(self.inLoop, "Break can only appear in a loop")
+    must(self.inLoop, 'Break can only appear in a loop');
   },
   isInsideAFunction(context) {
-    must(self.function, "Return can only appear in a function");
+    must(self.function, 'Return can only appear in a function');
   },
   isCallable() {
-    must(self.constructor.name === 'FunctionDeclaration', "Call of non-function"); // do we need this since we don't have function type?
+    must(self.constructor.name === 'FunctionDeclaration', 'Call of non-function'); // do we need this since we don't have function type?
   },
   returnsNothing() {
-    must(
-      self.type.returnType === Type.VOID,
-      "Something should be returned here"
-    );
+    must(self.type.returnType === Type.VOID, 'Something should be returned here');
   },
   returnsSomething() {
-    must(self.type.returnType !== Type.VOID, "Cannot return a value here");
+    must(self.type.returnType !== Type.VOID, 'Cannot return a value here');
   },
   isReturnableFrom(f) {
     check(self).isAssignableTo(f.type.returnType);
@@ -110,11 +89,11 @@ const check = (self) => ({
     );
     targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type));
   },
-  matchParametersOf(callee) {    
-    check(self).match(callee.header.parameters.map((p) => p.type));
+  matchParametersOf(callee) {
+    check(self).match(callee.header.parameters.map(p => p.type));
   },
   matchFieldsOf(structType) {
-    check(self).match(structType.fields.map((f) => f.type));
+    check(self).match(structType.fields.map(f => f.type));
   },
 });
 
@@ -164,20 +143,20 @@ class Context {
   }
   FunctionDeclaration(f) {
     check(f.header.returnType).isAType();
-    const childContext = this.newChild({ inLoop: false, forFunction: f.header })
-    f.header.parameters = childContext.analyze(f.header.parameters)
+    const childContext = this.newChild({ inLoop: false, forFunction: f.header });
+    f.header.parameters = childContext.analyze(f.header.parameters);
     f.header.type = new FunctionType(
       f.header.parameters.map(p => p.type),
       f.header.returnType
-    )
-    this.add(f.header.name, f)
+    );
+    this.add(f.header.name, f);
     f.body = childContext.analyze(f.body);
     return f;
   }
   Parameter(p) {
-    p.type = this.analyze(p.type)
-    check(p.type).isAType()
-    this.add(p.name, p)
+    p.type = this.analyze(p.type);
+    check(p.type).isAType();
+    this.add(p.name, p);
     return p;
   }
   Assignment(a) {
@@ -189,57 +168,55 @@ class Context {
   }
   IdentifierExpression(e) {
     e = this.lookup(e.name);
-    return e
+    return e;
   }
   Print(p) {
     p.argument = this.analyze(p.argument);
     return p;
   }
   BinaryExpression(b) {
-    b.left = this.analyze(b.left)
-    b.right = this.analyze(b.right)
-    if (["+", "-", "*", "/", "%", "**"].includes(b.op)) {
-      check(b.left).isNumeric()
-      check(b.left).hasSameTypeAs(b.right)
-      b.type = b.left.type
-    }
-    else if(["<=", ">=", "<", ">"].includes(b.op) ) {
-      check(b.left).isNumericOrString()
-      check(b.left).hasSameTypeAs(b.right)
-      b.type = Type.BOOLEAN
-    }
-    else if(["==", "!="].includes(b.op) ) {
-      check(b.left).hasSameTypeAs(b.right)
-      b.type = Type.BOOLEAN
+    b.left = this.analyze(b.left);
+    b.right = this.analyze(b.right);
+    if (['+', '-', '*', '/', '%', '**'].includes(b.op)) {
+      check(b.left).isNumeric();
+      check(b.left).hasSameTypeAs(b.right);
+      b.type = b.left.type;
+    } else if (['<=', '>=', '<', '>'].includes(b.op)) {
+      check(b.left).isNumericOrString();
+      check(b.left).hasSameTypeAs(b.right);
+      b.type = Type.BOOLEAN;
+    } else if (['==', '!='].includes(b.op)) {
+      check(b.left).hasSameTypeAs(b.right);
+      b.type = Type.BOOLEAN;
     }
     return b;
   }
   Conditional(c) {
-    c.expression = this.analyze(c.expression)
-    check(c.expression).isBoolean
-    c.statements = this.newChild().analyze(c.statements)
+    c.expression = this.analyze(c.expression);
+    check(c.expression).isBoolean;
+    c.statements = this.newChild().analyze(c.statements);
     if (c.elseStatements.constructor === Array) {
-      c.elseStatements = this.newChild().analyze(c.elseStatements)
+      c.elseStatements = this.newChild().analyze(c.elseStatements);
     } else if (s.elseStatements) {
-      c.elseStatements = this.analyze(c.elseStatements)
+      c.elseStatements = this.analyze(c.elseStatements);
     }
-    return c
+    return c;
   }
   ReturnStatement(r) {
-    check(this).isInsideAFunction()
-    r.expression = this.analyze(r.expression)
-    check(r.expression).isReturnableFrom(this.function)
+    check(this).isInsideAFunction();
+    r.expression = this.analyze(r.expression);
+    check(r.expression).isReturnableFrom(this.function);
     return r;
   }
   BreakStatement(b) {
-    check(this).isInsideALoop()
+    check(this).isInsideALoop();
     return b;
   }
-  WhileLoop (w) {
-    w.expression = this.analyze(w.expression)
-    check(w.expression).isBoolean()
-    w.body = this.newChild({ inLoop: true }).analyze(w.body)
-    return w
+  WhileLoop(w) {
+    w.expression = this.analyze(w.expression);
+    check(w.expression).isBoolean();
+    w.body = this.newChild({ inLoop: true }).analyze(w.body);
+    return w;
   }
   FuncCall(c) {
     c.callee = this.analyze(c.callee);
@@ -250,7 +227,7 @@ class Context {
     return c;
   }
   Type(t) {
-    return t
+    return t;
   }
   Number(e) {
     return e;
@@ -267,7 +244,7 @@ class Context {
 }
 
 export default function analyze(node) {
-  Number.prototype.type = Type.INT;
+  Number.prototype.type = Type.DOUBLE;
   BigInt.prototype.type = Type.INT;
   Boolean.prototype.type = Type.BOOLEAN;
   String.prototype.type = Type.STRING;
