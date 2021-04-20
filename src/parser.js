@@ -59,8 +59,8 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   InEq_equality(left, op, right) {
     return new ast.BinaryExpression(op.sourceString, left.tree(), right.tree());
   },
-  NegExp_negation(_youreNotMyDad, expression) {
-    return new ast.NegExpression(expression.tree());
+  NegExp_negation(op, expression) {
+    return new ast.NegExpression(op.sourceString,expression.tree());
   } /*
   NegExp_negative(_neg, expression) {
     return new ast.NegExpression(_neg.tree(), expression.tree())

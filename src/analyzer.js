@@ -33,37 +33,36 @@ const check = self => ({
   isBoolean() {
     must(self.type === Type.BOOLEAN, `Expected a boolean, found ${self.type.name}`);
   },
-  isInteger() {
-    must(self.type === Type.INT, `Expected an integer, found ${self.type.name}`);
-  },
+  //isInteger() {
+  //  must(self.type === Type.INT, `Expected an integer, found ${self.type.name}`);
+  //},
   isAType() {
     must(self instanceof Type, 'Type expected');
   },
-  //isAnOptional <-- I don't think we need this since we don't have optionals?
-  isAnArray() {
-    must(self.type.constructor === ArrayType, 'Array expected');
-  },
+  //isAnArray() {
+  //  must(self.type.constructor === ArrayType, 'Array expected');
+  //},
   hasSameTypeAs(other) {
     must(self.type.isEquivalentTo(other.type), 'Operands do not have the same type');
   },
-  allHaveSameType() {
-    must(
-      self.slice(1).every(e => e.type === self[0].type),
-      'Not all elements have the same type'
-    );
-  },
+  //allHaveSameType() {
+  //  must(
+  //    self.slice(1).every(e => e.type === self[0].type),
+  //    'Not all elements have the same type'
+  //  );
+  //},
   isAssignableTo(type) {
     must(self.type.isAssignableTo(type), `Cannot assign a ${self.type.name} to a ${type.name}`);
   },
   isNotReadOnly() {
     must(!self.readOnly, `Cannot assign to constant ${self.name}`);
   },
-  areAllDistinct() {
-    must(new Set(self.map(f => f.name)).size === self.length, 'Fields must be distinct');
-  },
-  isInTheOBject(object) {
-    must(object.type.fields.map(f => f.name).includes(self), 'No such field');
-  },
+  //areAllDistinct() {
+  //  must(new Set(self.map(f => f.name)).size === self.length, 'Fields must be distinct');
+  //},
+  //isInTheOBject(object) {
+  //  must(object.type.fields.map(f => f.name).includes(self), 'No such field');
+  //},
   isInsideALoop() {
     must(self.inLoop, 'Break can only appear in a loop');
   },
@@ -72,12 +71,6 @@ const check = self => ({
   },
   isCallable() {
     must(self.constructor.name === 'FunctionDeclaration', 'Call of non-function'); // do we need this since we don't have function type?
-  },
-  returnsNothing() {
-    must(self.type.returnType === Type.VOID, 'Something should be returned here');
-  },
-  returnsSomething() {
-    must(self.type.returnType !== Type.VOID, 'Cannot return a value here');
   },
   isReturnableFrom(f) {
     check(self).isAssignableTo(f.type.returnType);
@@ -91,9 +84,6 @@ const check = self => ({
   },
   matchParametersOf(callee) {
     check(self).match(callee.header.parameters.map(p => p.type));
-  },
-  matchFieldsOf(structType) {
-    check(self).match(structType.fields.map(f => f.type));
   },
 });
 
@@ -159,6 +149,11 @@ class Context {
     this.add(p.name, p);
     return p;
   }
+  NegExpression(n) {
+    n.left = this.analyze(n.left);
+    check(n.left).isBoolean();
+    return n;
+  }
   Assignment(a) {
     a.source = this.analyze(a.source);
     a.target = this.analyze(a.target);
@@ -191,15 +186,15 @@ class Context {
     }
     return b;
   }
+  UnaryExpression(b) {
+    b.left = this.analyze(b.left);
+    check(b.left).isNumeric();
+  }
   Conditional(c) {
     c.expression = this.analyze(c.expression);
     check(c.expression).isBoolean;
     c.statements = this.newChild().analyze(c.statements);
-    if (c.elseStatements.constructor === Array) {
-      c.elseStatements = this.newChild().analyze(c.elseStatements);
-    } else if (s.elseStatements) {
-      c.elseStatements = this.analyze(c.elseStatements);
-    }
+    c.elseStatements = this.newChild().analyze(c.elseStatements);
     return c;
   }
   ReturnStatement(r) {

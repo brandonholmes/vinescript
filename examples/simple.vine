@@ -1,4 +1,3 @@
-whenLifeGivesYouLemons int myFunc(int y) {
-    thisBitchEmpty 7
-}
-myFunc(x)
+lookAtThisGraph x = 7
+x++
+x--

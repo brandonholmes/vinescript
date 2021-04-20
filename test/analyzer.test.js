@@ -34,6 +34,8 @@ const semanticChecks = [
     `whenLifeGivesYouLemons double lemonade() { thisBitchEmpty 6.5 + 6.5}`,
   ],
   ['return int expression', `whenLifeGivesYouLemons int lemonade() { thisBitchEmpty 6 + 6}`],
+  ['increment operator', `lookAtThisGraph x = 7 x++`], 
+  ['decrement operator', `lookAtThisGraph x = 7 x--`],
   // -also check that it recognizes inequalities (or's and ands) and doesnt allow comparing a number and a string, and a boolean and a number
   ['conditional', `lookAtThisGraph x = 4 bitchIhopeTheFuckYouDo (x > 7) print 1 orWhat print 3`],
   [
@@ -55,7 +57,9 @@ const semanticChecks = [
       yeet
     }`,
   ],
+  ['negation', `lookAtThisGraph x = youreNotMyDad thatIsNotCorrect`],
   ['conditional without else', `bitchIhopeTheFuckYouDo(7 > 6) print 8`],
+  ['conditional with else', `bitchIhopeTheFuckYouDo(8 > 5) print 9 print 7 orWhat lookAtThisGraph x = 7 print x`],
   [
     'function call',
     `whenLifeGivesYouLemons int myFunc(int x) {
@@ -123,22 +127,12 @@ const semanticErrors = [
     /Cannot assign a string to a int/,
   ],
   ['return outside a function', `thisBitchEmpty x`, /Return can only appear in a function/],
-  // [
-  //   "return value from void function",
-  //   `whenLifeGivesYouLemons {thisBitchEmpty "t"}`,
-  //   /Cannot return a value here/,
-  // ],
+  ['decrement on a boolean', `lookAtThisGraph x = thatIsNotCorrect x++`, /Expected a number, found boolean/],
+  ['increment on a boolean', `lookAtThisGraph x = thatIsNotCorrect x--`, /Expected a number, found boolean/],
   ['bad types for ==', 'print(thatIsNotCorrect==1)', /Operands do not have the same type/],
-  // [
-  //   "return value from void function",
-  //   `whenLifeGivesYouLemons f() {thisBitchEmpty 1}`,
-  //   /Cannot return a value here/,
-  // ],
-  // [
-  //   "return nothing from non-void",
-  //   "whenLifeGivesYouLemons f(): int {return;}",
-  //   /should be returned here/,
-  // ],
+  ['negation of integer', `lookAtThisGraph x = youreNotMyDad 7`, /Expected a boolean, found int/],
+  ['negation of double', `lookAtThisGraph x = youreNotMyDad 7.5`, /Expected a boolean, found double/],
+  ['negation of string', `lookAtThisGraph x = youreNotMyDad "myString"`, /Expected a boolean, found string/],
 ];
 
 describe('The analyzer', () => {
