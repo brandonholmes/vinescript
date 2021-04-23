@@ -9,7 +9,7 @@ const semanticChecks = [
   ['string declaration', `lookAtThisGraph z = "HelloWorld"`],
   ['function declaration', `whenLifeGivesYouLemons int myOtherFunction(int x, int y) { x = 7 }`],
   [
-    '4.function declaration',
+    'function declaration',
     `whenLifeGivesYouLemons int lemonade(int d, int bb) { d = 34 bb = 35 print d + bb } `,
   ],
   [

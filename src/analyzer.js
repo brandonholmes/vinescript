@@ -57,12 +57,6 @@ const check = self => ({
   isNotReadOnly() {
     must(!self.readOnly, `Cannot assign to constant ${self.name}`);
   },
-  //areAllDistinct() {
-  //  must(new Set(self.map(f => f.name)).size === self.length, 'Fields must be distinct');
-  //},
-  //isInTheOBject(object) {
-  //  must(object.type.fields.map(f => f.name).includes(self), 'No such field');
-  //},
   isInsideALoop() {
     must(self.inLoop, 'Break can only appear in a loop');
   },
@@ -70,7 +64,7 @@ const check = self => ({
     must(self.function, 'Return can only appear in a function');
   },
   isCallable() {
-    must(self.constructor.name === 'FunctionDeclaration', 'Call of non-function'); // do we need this since we don't have function type?
+    must(self.constructor.name === 'FunctionDeclaration', 'Call of non-function'); 
   },
   isReturnableFrom(f) {
     check(self).isAssignableTo(f.type.returnType);
@@ -193,6 +187,7 @@ class Context {
   UnaryExpression(b) {
     b.left = this.analyze(b.left);
     check(b.left).isNumeric();
+    return b;
   }
   Conditional(c) {
     c.expression = this.analyze(c.expression);

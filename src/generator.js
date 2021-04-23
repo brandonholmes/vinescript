@@ -27,8 +27,38 @@ export default function generate(program) {
         output.push("}")
     },
     Print(p) {
-        console.log(p.argument)
-        output.push(`console.log(${gen(p.argument)})`)
+        output.push(`console.log(${gen(p.argument)});`)
+    },
+    BinaryExpression(b) {
+        return `${gen(b.left)} ${b.op} ${gen(b.right)}`
+    },
+    UnaryExpression(u) {
+        let op = "";
+        if(["++", "--"].includes(u.op)) op = ";"
+        output.push(`${gen(u.left)}${u.op}${op}`)
+    },
+    Conditional(c) {
+        output.push(`if(${gen(c.expression)}) {`)
+        gen(c.statements)
+        if(c.elseStatements[0]) {
+            output.push(`} else {`)
+        }
+        output.push(`${gen(c.elseStatements)}}`)
+    },
+    Assignment(a) {
+        output.push(`${gen(a.target)} = ${gen(a.source)};`)
+    },
+    WhileLoop(w) {
+        output.push(`while(${gen(w.expression)}) {`);
+        gen(w.body);
+        output.push(`}`);
+    },
+    ReturnStatement(r) {
+        output.push(`return ${gen(r.expression)};`);
+    },
+    FuncCall(f) {
+        console.log(f)
+        output.push(`${gen(f.callee.header.name)}(${gen(f.args).join(", ")});`)
     },
     Function(f) {
         return targetName(f)
@@ -55,6 +85,7 @@ export default function generate(program) {
         return a.map(gen)
     }
 }
+    console.log(program)
     gen(program)
     return output.join("\n")
 }

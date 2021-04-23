@@ -1,1 +1,2 @@
-whenLifeGivesYouLemons int myFunc(int x) { print x }
+lookAtThisGraph x = 7
+x + 9
