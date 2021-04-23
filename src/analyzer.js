@@ -183,7 +183,11 @@ class Context {
     } else if (['==', '!='].includes(b.op)) {
       check(b.left).hasSameTypeAs(b.right);
       b.type = Type.BOOLEAN;
+    } else if (['andIoop', '||'].includes(b.op)) {
+      check(b.right).isBoolean() 
+      check(b.left).isBoolean()
     }
+
     return b;
   }
   UnaryExpression(b) {

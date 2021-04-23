@@ -18,9 +18,9 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     const [name, readOnly] = [id.sourceString, lookAtThisGraphConst.sourceString == 'const'];
     return new ast.VariableDeclaration(new ast.Variable(name, readOnly), expression.tree());
   },
-  Params(paramList) {
-    return paramList.asIteration().tree();
-  },
+  //Params(paramList) {
+  //  return paramList.asIteration().tree();
+  //},
   Param(type, id) {
     return new ast.Parameter(type.tree(), id.sourceString);
   },
@@ -87,9 +87,9 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   int(_) {
     return ast.Type.INT;
   },
-  boolean(_) {
-    return ast.Type.BOOLEAN;
-  },
+  //boolean(_) {
+  //  return ast.Type.BOOLEAN;
+  //},
   string(_) {
     return ast.Type.STRING;
   },
@@ -108,9 +108,9 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   thatIsNotCorrect(_) {
     return false;
   },
-  _terminal() {
-    return this.sourceString;
-  },
+  //_terminal() {
+  //  return this.sourceString;
+  //},
 });
 
 export default function parse(sourceCode) {

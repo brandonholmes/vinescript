@@ -10,7 +10,8 @@ Syntax: src/vinescript.js <filename> <outputType>
 
 Prints to stdout based on <outputType>, current supported options are:
 
-    ast    the abstract syntax tree
+    ast       the abstract syntax tree
+    analyzed  the analyzed tree
 `;
 
 async function compileFromFile(filename, outputType) {

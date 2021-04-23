@@ -7,7 +7,6 @@ const semanticChecks = [
   ['int declaration', `lookAtThisGraph z = 4`],
   ['boolean declaration', `lookAtThisGraph z = thatIsNotCorrect`],
   ['string declaration', `lookAtThisGraph z = "HelloWorld"`],
-  //["type declarations", `struct S{x:T1 y:T2 z:bool}`],
   ['function declaration', `whenLifeGivesYouLemons int myOtherFunction(int x, int y) { x = 7 }`],
   [
     '4.function declaration',
@@ -36,7 +35,7 @@ const semanticChecks = [
   ['return int expression', `whenLifeGivesYouLemons int lemonade() { thisBitchEmpty 6 + 6}`],
   ['increment operator', `lookAtThisGraph x = 7 x++`], 
   ['decrement operator', `lookAtThisGraph x = 7 x--`],
-  // -also check that it recognizes inequalities (or's and ands) and doesnt allow comparing a number and a string, and a boolean and a number
+  // -also check that it recognizes inequalities (or's and ands)
   ['conditional', `lookAtThisGraph x = 4 bitchIhopeTheFuckYouDo (x > 7) print 1 orWhat print 3`],
   [
     'good types for >',
@@ -69,9 +68,39 @@ const semanticChecks = [
     myFunc(y)
     `,
   ],
+  ['function with multiple parameters', `whenLifeGivesYouLemons int myFunc(int x, int y) {print x + y}`]
 ];
 
 const semanticErrors = [
+  //doesnt allow comparing a number and a string, and a boolean and a number
+  [
+    "compare int and string",
+    `lookAtThisGraph x = 7
+    lookAtThisGraph y = "myString"
+    bitchIhopeTheFuckYouDo(x andIoop y) print 8`,
+    /Expected a boolean, found string/
+  ],
+  [
+    "compare int or string",
+    `lookAtThisGraph x = 7
+    lookAtThisGraph y = "myString"
+    bitchIhopeTheFuckYouDo(x || y) print 8`,
+    /Expected a boolean, found string/
+  ],
+  [
+    "compare int and boolean",
+    `lookAtThisGraph x = 7
+    lookAtThisGraph y = thatIsNotCorrect
+    bitchIhopeTheFuckYouDo(x > y) print 8`,
+    /Operands do not have the same type/
+  ],
+  [
+    "compare int and string",
+    `lookAtThisGraph x = 7
+    lookAtThisGraph y = "myString"
+    bitchIhopeTheFuckYouDo(x > y) print 8`,
+    /Operands do not have the same type/
+  ],
   [
     'rejects attempt to shadow',
     `whenLifeGivesYouLemons int thisFunc(int x) {

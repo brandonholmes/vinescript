@@ -1,5 +1,17 @@
 import assert from 'assert';
 import parse from '../src/parser.js';
+import * as ast from '../src/ast.js'
+
+const source = `
+  lookAtThisGraph x = 7
+  x++
+  x--
+`
+const expectedAST = new ast.Program([
+  new ast.VariableDeclaration(new ast.Variable("x", false), 7n),
+  new ast.UnaryExpression("++", new ast.IdentifierExpression("x")),
+  new ast.UnaryExpression("--", new ast.IdentifierExpression("x"))
+]);
 
 const goodPrograms = [
   `lookAtThisGraph x = 5`,
@@ -57,6 +69,12 @@ const badPrograms = [
   `x +`,
   `print )`,
 ];
+
+describe("The parser", () => {
+  it("produces a correct AST", () => {
+    assert.deepStrictEqual(parse(source), expectedAST);
+  })
+})
 
 describe('The parser', () => {
   for (const program of goodPrograms) {
