@@ -12,7 +12,7 @@ export default function generate(program) {
     }
   })(new Map())
 
-  const gen = node => generators[node.constructor.name](node)
+  const gen = (node, inAssign) => generators[node.constructor.name](node, inAssign)
 
   const generators = {
     Program(p) {
@@ -46,7 +46,13 @@ export default function generate(program) {
         output.push(`${gen(c.elseStatements)}}`)
     },
     Assignment(a) {
-        output.push(`${gen(a.target)} = ${gen(a.source)};`)
+        if(a.source.constructor.name == 'FuncCall') {
+            output.push(`${gen(a.target)} = ${gen(a.source, true)};`)
+        }
+        else {
+            output.push(`${gen(a.target)} = ${gen(a.source)};`)
+        }
+        
     },
     WhileLoop(w) {
         output.push(`while(${gen(w.expression)}) {`);
@@ -56,9 +62,16 @@ export default function generate(program) {
     ReturnStatement(r) {
         output.push(`return ${gen(r.expression)};`);
     },
-    FuncCall(f) {
-        console.log(f)
-        output.push(`${gen(f.callee.header.name)}(${gen(f.args).join(", ")});`)
+    BreakStatement() {
+        output.push(`break;`);
+    },
+    FuncCall(f, inAssign = false) {
+        if(inAssign === true) {
+            return (`${gen(f.callee)}(${gen(f.args).join(", ")})`)            
+        }
+        else {
+            output.push(`${gen(f.callee)}(${gen(f.args).join(", ")});`)
+        }
     },
     Function(f) {
         return targetName(f)
@@ -85,7 +98,6 @@ export default function generate(program) {
         return a.map(gen)
     }
 }
-    console.log(program)
     gen(program)
     return output.join("\n")
 }

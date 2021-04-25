@@ -22,10 +22,6 @@ export class Type {
   isEquivalentTo(target) {
     return this == target;
   }
-
-  isAssignableTo(target) {
-    return this.isEquivalentTo(target);
-  }
 }
 
 export class FunctionType extends Type {
@@ -142,19 +138,6 @@ export class FuncCall {
     Object.assign(this, { callee, args });
   }
 }
-/*
-  export class NumericLiteral  {
-    constructor(value) {
-      this.value = value;
-    }
-  }
-
-  export class StringLiteral  {
-    constructor(value) {
-      this.value = value;
-    }
-  }
-  */
 
 function prettied(node) {
   // Return a compact and pretty string representation of the node graph,

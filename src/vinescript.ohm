@@ -15,6 +15,7 @@ vinescript  {
 
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
+                          | FuncCall
                           | LogExp
   LogExp                  = LogExp (andIoop | "||") MulExp                --logical
                           | MulExp

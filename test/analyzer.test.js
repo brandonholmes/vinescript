@@ -35,7 +35,8 @@ const semanticChecks = [
   ['return int expression', `whenLifeGivesYouLemons int lemonade() { thisBitchEmpty 6 + 6}`],
   ['increment operator', `lookAtThisGraph x = 7 x++`], 
   ['decrement operator', `lookAtThisGraph x = 7 x--`],
-  // -also check that it recognizes inequalities (or's and ands)
+  ['and statement', `print (thatIsNotCorrect andIoop thatIsNotCorrect)`],
+  ['or statement', `print (thatIsNotCorrect || thatIsNotCorrect)`],
   ['conditional', `lookAtThisGraph x = 4 bitchIhopeTheFuckYouDo (x > 7) print 1 orWhat print 3`],
   [
     'good types for >',
@@ -68,11 +69,26 @@ const semanticChecks = [
     myFunc(y)
     `,
   ],
-  ['function with multiple parameters', `whenLifeGivesYouLemons int myFunc(int x, int y) {print x + y}`]
+  ['function with multiple parameters', `whenLifeGivesYouLemons int myFunc(int x, int y) {print x + y}`],
+  [
+    'long program', 
+    `lookAtThisGraph start = 1
+    lookAtThisGraph end = 100
+    
+    whenLifeGivesYouLemons int myGenerator(int x) {
+        thisBitchEmpty x + 1
+    }
+
+    iAintGunnaStopLovinYou (start < end) {
+        start = myGenerator(start)
+        bitchIhopeTheFuckYouDo((start / 2) != 0) 
+            print start
+        
+    }`
+  ]
 ];
 
 const semanticErrors = [
-  //doesnt allow comparing a number and a string, and a boolean and a number
   [
     "compare int and string",
     `lookAtThisGraph x = 7

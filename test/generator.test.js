@@ -111,6 +111,49 @@ const programs = [
           let y_3 = 7;
           myFunc_1(y_3);
         `)
+    },
+    {
+        name: "break",
+        source: `lookAtThisGraph x = 8 iAintGunnaStopLovinYou (x > 7) { yeet }`,
+        expected: dedent(`
+            let x_1 = 8;
+            while(x_1 > 7) {
+                break;
+            }
+        `)
+    },
+    {
+        name: "long function",
+        source: `
+            lookAtThisGraph start = 1
+            lookAtThisGraph end = 100
+            
+            whenLifeGivesYouLemons int myGenerator(int x) {
+                thisBitchEmpty x + 1
+            }
+
+            iAintGunnaStopLovinYou (start < end) {
+                start = myGenerator(start)
+                bitchIhopeTheFuckYouDo((start / 2) != 0) 
+                    print start
+                
+            }
+        `,
+        expected: dedent(`
+            let start_1 = 1;
+            let end_2 = 100;
+
+            function myGenerator_3(x_4) {
+                return x_4 + 1;
+            }
+
+            while(start_1 < end_2) {
+                start_1 = myGenerator_3(start_1);
+                if(start_1 / 2 != 0) {
+                    console.log(start_1);
+                }
+            }
+        `)
     }
 ]
 

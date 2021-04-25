@@ -33,26 +33,14 @@ const check = self => ({
   isBoolean() {
     must(self.type === Type.BOOLEAN, `Expected a boolean, found ${self.type.name}`);
   },
-  //isInteger() {
-  //  must(self.type === Type.INT, `Expected an integer, found ${self.type.name}`);
-  //},
   isAType() {
     must(self instanceof Type, 'Type expected');
   },
-  //isAnArray() {
-  //  must(self.type.constructor === ArrayType, 'Array expected');
-  //},
   hasSameTypeAs(other) {
     must(self.type.isEquivalentTo(other.type), 'Operands do not have the same type');
   },
-  //allHaveSameType() {
-  //  must(
-  //    self.slice(1).every(e => e.type === self[0].type),
-  //    'Not all elements have the same type'
-  //  );
-  //},
   isAssignableTo(type) {
-    must(self.type.isAssignableTo(type), `Cannot assign a ${self.type.name} to a ${type.name}`);
+    must(self.type === type || self.type.returnType === type, `Cannot assign a ${self.type.name} to a ${type.name}`);
   },
   isNotReadOnly() {
     must(!self.readOnly, `Cannot assign to constant ${self.name}`);
@@ -64,10 +52,10 @@ const check = self => ({
     must(self.function, 'Return can only appear in a function');
   },
   isCallable() {
-    must(self.constructor.name === 'FunctionDeclaration', 'Call of non-function'); 
+    must(self.constructor.name === 'Function', 'Call of non-function'); 
   },
   isReturnableFrom(f) {
-    check(self).isAssignableTo(f.type.returnType);
+    check(self).isAssignableTo(f.type.returnType)
   },
   match(targetTypes) {
     must(
@@ -77,7 +65,7 @@ const check = self => ({
     targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type));
   },
   matchParametersOf(callee) {
-    check(self).match(callee.header.parameters.map(p => p.type));
+    check(self).match(callee.parameters.map(p => p.type));
   },
 });
 
@@ -133,7 +121,7 @@ class Context {
       f.header.parameters.map(p => p.type),
       f.header.returnType
     );
-    this.add(f.header.name, f);
+    this.add(f.header.name, f.header);
     f.body = childContext.analyze(f.body);
     return f;
   }
@@ -152,7 +140,7 @@ class Context {
     a.source = this.analyze(a.source);
     a.target = this.analyze(a.target);
     check(a.source).isAssignableTo(a.target.type);
-    check(a.source).isNotReadOnly();
+    check(a.target).isNotReadOnly();
     return a;
   }
   IdentifierExpression(e) {
@@ -217,7 +205,7 @@ class Context {
     check(c.callee).isCallable();
     c.args = this.analyze(c.args);
     check(c.args).matchParametersOf(c.callee);
-    c.type = c.callee.header.returnType;
+    c.type = c.callee.returnType;
     return c;
   }
   Type(t) {
