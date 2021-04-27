@@ -1,6 +1,6 @@
 vinescript  {
   Program                 = Statement+
-  Statement               = Conditional | WhileLoop | Declaration | Assignment | Print | FuncCall | Exp
+  Statement               = IfStatement | WhileLoop | Declaration | Assignment | Print | FuncCall | Exp
   Declaration             = Function | Variable
   Function                = whenLifeGivesYouLemons type id "(" Params ")" "{" Body "}"
   Params                  = ListOf<Param, ",">
@@ -11,7 +11,7 @@ vinescript  {
   Print                   = print Exp
   FuncCall                = ~keyword id "(" ListOf<Exp, ","> ")"
   WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" "{" Statement+ "}"
-  Conditional             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
+  IfStatement             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
 
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
@@ -31,7 +31,7 @@ vinescript  {
                           | id
                           | numlit
                           | strlit
-                          | Conditional
+                          | IfStatement
                           | return Exp                                     --return
                           | break                                           --break
 

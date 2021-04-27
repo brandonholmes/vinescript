@@ -37,7 +37,7 @@ export default function generate(program) {
         if(["++", "--"].includes(u.op)) op = ";"
         output.push(`${gen(u.left)}${u.op}${op}`)
     },
-    Conditional(c) {
+    IfStatement(c) {
         output.push(`if(${gen(c.expression)}) {`)
         gen(c.statements)
         if(c.elseStatements[0]) {

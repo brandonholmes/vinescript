@@ -31,7 +31,7 @@ export class FunctionType extends Type {
   }
 }
 
-export class Conditional {
+export class IfStatement {
   constructor(expression, statements, elseStatements) {
     Object.assign(this, { expression, statements, elseStatements });
   }

@@ -1,5 +1,5 @@
 import {
-  Conditional,
+  IfStatement,
   WhileLoop,
   Function,
   Variable,
@@ -177,7 +177,7 @@ class Context {
     check(b.left).isNumeric();
     return b;
   }
-  Conditional(c) {
+  IfStatement(c) {
     c.expression = this.analyze(c.expression);
     check(c.expression).isBoolean;
     c.statements = this.newChild().analyze(c.statements);

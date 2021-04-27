@@ -33,7 +33,7 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   WhileLoop(_iAintGunnaStopLovinYou, _left, expressions, _right, _open, body, _close) {
     return new ast.WhileLoop(expressions.tree(), body.tree());
   },
-  Conditional(
+  IfStatement(
     _bitchIhopeTheFuckYouDo,
     _left,
     expression,
@@ -42,7 +42,7 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     _orWhat,
     elseStatements
   ) {
-    return new ast.Conditional(expression.tree(), statements.tree(), elseStatements.tree());
+    return new ast.IfStatement(expression.tree(), statements.tree(), elseStatements.tree());
   },
   Exp_plusminus(left, op, right) {
     return new ast.BinaryExpression(op.sourceString, left.tree(), right.tree());
