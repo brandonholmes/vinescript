@@ -44,24 +44,25 @@ vinescript  {
   indecop 	              =  "++" | "--"
   type             		    = boolean | double | int | string
 
-  lookAtThisGraph  = "lookAtThisGraph"
-  const            = "const"
-  thatIsNotCorrect = "thatIsNotCorrect"
-  bitchIhopeTheFuckYouDo = "bitchIhopeTheFuckYouDo"
-  whenLifeGivesYouLemons   = "whenLifeGivesYouLemons"
-  iSureHopeItDoes  = "iSureHopeItDoes"
-  iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou"
-  thisBitchEmpty   = "thisBitchEmpty"
-  yeet             = "yeet"
-  orWhat           = "orWhat"
-  youreNotMyDad    = "youreNotMyDad"
-  andIoop          = "andIoop"
-  int              = "int"
-  string           = "string"
-  boolean          = "boolean"
-  double           = "double"
-  return           = "thisBitchEmpty"
-  break            = "yeet"
+  lookAtThisGraph  = "lookAtThisGraph" ~alnum
+  const            = "const" ~alnum
+  thatIsNotCorrect = "thatIsNotCorrect" ~alnum
+  bitchIhopeTheFuckYouDo = "bitchIhopeTheFuckYouDo" ~alnum
+  whenLifeGivesYouLemons   = "whenLifeGivesYouLemons" ~alnum
+  iSureHopeItDoes  = "iSureHopeItDoes" ~alnum
+  iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou" ~alnum
+  thisBitchEmpty   = "thisBitchEmpty" ~alnum
+  break            =  yeet
+  yeet             = "yeet" ~alnum
+  orWhat           = "orWhat" ~alnum
+  youreNotMyDad    = "youreNotMyDad" ~alnum
+  andIoop          = "andIoop" ~alnum
+  int              = "int" ~alnum
+  string           = "string" ~alnum
+  boolean          = "boolean" ~alnum
+  double           = "double" ~alnum
+  return           = "thisBitchEmpty" ~alnum
+  
 
   keyword     = bitchIhopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print
               | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad

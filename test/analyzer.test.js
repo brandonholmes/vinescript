@@ -2,6 +2,7 @@ import assert from 'assert';
 import parse from '../src/parser.js';
 import analyze from '../src/analyzer.js';
 import * as ast from '../src/ast.js';
+import util from "util";
 
 const semanticChecks = [
   ['int declaration', `lookAtThisGraph z = 4`],
@@ -192,4 +193,11 @@ describe('The analyzer', () => {
       assert.throws(() => analyze(parse(source)), errorMessagePattern);
     });
   }
+
+  it(`prints programs`, () => {
+    assert.ok(util.inspect(analyze(parse("lookAtThisGraph x = 7"))))
+  })
+
 });
+
+
