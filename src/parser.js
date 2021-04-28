@@ -1,22 +1,42 @@
-import fs from 'fs';
-import ohm from 'ohm-js';
-import * as ast from './ast.js';
+import fs from "fs";
+import ohm from "ohm-js";
+import * as ast from "./ast.js";
 
-const grammar = ohm.grammar(fs.readFileSync('./src/vinescript.ohm'));
+const grammar = ohm.grammar(fs.readFileSync("./src/vinescript.ohm"));
 
-const astBuilder = grammar.createSemantics().addOperation('tree', {
+const astBuilder = grammar.createSemantics().addOperation("tree", {
   Program(statements) {
     return new ast.Program(statements.tree());
   },
-  Function(_whenLifeGivesYouLemons, type, name, _left, params, _right, _open, body, _close) {
+  Function(
+    _whenLifeGivesYouLemons,
+    type,
+    name,
+    _left,
+    params,
+    _right,
+    _open,
+    body,
+    _close
+  ) {
     return new ast.FunctionDeclaration(
-      new ast.Function(name.sourceString, params.asIteration().tree(), type.tree()),
+      new ast.Function(
+        name.sourceString,
+        params.asIteration().tree(),
+        type.tree()
+      ),
       body.tree()
     );
   },
   Variable(lookAtThisGraphConst, id, _equal, expression) {
-    const [name, readOnly] = [id.sourceString, lookAtThisGraphConst.sourceString == 'const'];
-    return new ast.VariableDeclaration(new ast.Variable(name, readOnly), expression.tree());
+    const [name, readOnly] = [
+      id.sourceString,
+      lookAtThisGraphConst.sourceString == "const",
+    ];
+    return new ast.VariableDeclaration(
+      new ast.Variable(name, readOnly),
+      expression.tree()
+    );
   },
   //Params(paramList) {
   //  return paramList.asIteration().tree();
@@ -30,7 +50,15 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   Print(_print, argument) {
     return new ast.Print(argument.tree());
   },
-  WhileLoop(_iAintGunnaStopLovinYou, _left, expressions, _right, _open, body, _close) {
+  WhileLoop(
+    _iAintGunnaStopLovinYou,
+    _left,
+    expressions,
+    _right,
+    _open,
+    body,
+    _close
+  ) {
     return new ast.WhileLoop(expressions.tree(), body.tree());
   },
   IfStatement(
@@ -42,7 +70,11 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     _orWhat,
     elseStatements
   ) {
-    return new ast.IfStatement(expression.tree(), statements.tree(), elseStatements.tree());
+    return new ast.IfStatement(
+      expression.tree(),
+      statements.tree(),
+      elseStatements.tree()
+    );
   },
   Exp_plusminus(left, op, right) {
     return new ast.BinaryExpression(op.sourceString, left.tree(), right.tree());
@@ -60,7 +92,7 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return new ast.BinaryExpression(op.sourceString, left.tree(), right.tree());
   },
   NegExp_negation(op, expression) {
-    return new ast.NegExpression(op.sourceString,expression.tree());
+    return new ast.NegExpression(op.sourceString, expression.tree());
   } /*
   NegExp_negative(_neg, expression) {
     return new ast.NegExpression(_neg.tree(), expression.tree())
@@ -100,7 +132,9 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return strlit.sourceString;
   },
   numlit(_neg, _digits, _dot, _decimals, _carrot, _exponents) {
-    return this.sourceString.includes('.') ? Number(this.sourceString) : BigInt(this.sourceString);
+    return this.sourceString.includes(".")
+      ? Number(this.sourceString)
+      : BigInt(this.sourceString);
   },
   iSureHopeItDoes(_) {
     return true;

@@ -8,11 +8,11 @@ import {
   Print,
   BinaryExpression,
   Type,
-} from './ast.js';
-import * as stdlib from './stdlib.js';
-import util from 'util';
-import { Console } from 'console';
-import { lookup } from 'dns';
+} from "./ast.js";
+import * as stdlib from "./stdlib.js";
+import util from "util";
+import { Console } from "console";
+import { lookup } from "dns";
 
 function must(condition, errorMessage) {
   if (!condition) {
@@ -20,9 +20,12 @@ function must(condition, errorMessage) {
   }
 }
 
-const check = self => ({
+const check = (self) => ({
   isNumeric() {
-    must([Type.INT, Type.DOUBLE].includes(self.type), `Expected a number, found ${self.type.name}`);
+    must(
+      [Type.INT, Type.DOUBLE].includes(self.type),
+      `Expected a number, found ${self.type.name}`
+    );
   },
   isNumericOrString() {
     must(
@@ -31,31 +34,40 @@ const check = self => ({
     );
   },
   isBoolean() {
-    must(self.type === Type.BOOLEAN, `Expected a boolean, found ${self.type.name}`);
+    must(
+      self.type === Type.BOOLEAN,
+      `Expected a boolean, found ${self.type.name}`
+    );
   },
   isAType() {
-    must(self instanceof Type, 'Type expected');
+    must(self instanceof Type, "Type expected");
   },
   hasSameTypeAs(other) {
-    must(self.type.isEquivalentTo(other.type), 'Operands do not have the same type');
+    must(
+      self.type.isEquivalentTo(other.type),
+      "Operands do not have the same type"
+    );
   },
   isAssignableTo(type) {
-    must(self.type === type || self.type.returnType === type, `Cannot assign a ${self.type.name} to a ${type.name}`);
+    must(
+      self.type === type || self.type.returnType === type,
+      `Cannot assign a ${self.type.name} to a ${type.name}`
+    );
   },
   isNotReadOnly() {
     must(!self.readOnly, `Cannot assign to constant ${self.name}`);
   },
   isInsideALoop() {
-    must(self.inLoop, 'Break can only appear in a loop');
+    must(self.inLoop, "Break can only appear in a loop");
   },
   isInsideAFunction(context) {
-    must(self.function, 'Return can only appear in a function');
+    must(self.function, "Return can only appear in a function");
   },
   isCallable() {
-    must(self.constructor.name === 'Function', 'Call of non-function'); 
+    must(self.constructor.name === "Function", "Call of non-function");
   },
   isReturnableFrom(f) {
-    check(self).isAssignableTo(f.type.returnType)
+    check(self).isAssignableTo(f.type.returnType);
   },
   match(targetTypes) {
     must(
@@ -65,7 +77,7 @@ const check = self => ({
     targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type));
   },
   matchParametersOf(callee) {
-    check(self).match(callee.parameters.map(p => p.type));
+    check(self).match(callee.parameters.map((p) => p.type));
   },
 });
 
@@ -105,7 +117,7 @@ class Context {
     return p;
   }
   Array(a) {
-    return a.map(item => this.analyze(item));
+    return a.map((item) => this.analyze(item));
   }
   VariableDeclaration(v) {
     v.expression = this.analyze(v.expression);
@@ -115,10 +127,13 @@ class Context {
   }
   FunctionDeclaration(f) {
     check(f.header.returnType).isAType();
-    const childContext = this.newChild({ inLoop: false, forFunction: f.header });
+    const childContext = this.newChild({
+      inLoop: false,
+      forFunction: f.header,
+    });
     f.header.parameters = childContext.analyze(f.header.parameters);
     f.header.type = new FunctionType(
-      f.header.parameters.map(p => p.type),
+      f.header.parameters.map((p) => p.type),
       f.header.returnType
     );
     this.add(f.header.name, f.header);
@@ -154,20 +169,20 @@ class Context {
   BinaryExpression(b) {
     b.left = this.analyze(b.left);
     b.right = this.analyze(b.right);
-    if (['+', '-', '*', '/', '%', '**'].includes(b.op)) {
+    if (["+", "-", "*", "/", "%", "**"].includes(b.op)) {
       check(b.left).isNumeric();
       check(b.left).hasSameTypeAs(b.right);
       b.type = b.left.type;
-    } else if (['<=', '>=', '<', '>'].includes(b.op)) {
+    } else if (["<=", ">=", "<", ">"].includes(b.op)) {
       check(b.left).isNumericOrString();
       check(b.left).hasSameTypeAs(b.right);
       b.type = Type.BOOLEAN;
-    } else if (['==', '!='].includes(b.op)) {
+    } else if (["==", "!="].includes(b.op)) {
       check(b.left).hasSameTypeAs(b.right);
       b.type = Type.BOOLEAN;
-    } else if (['andIoop', '||'].includes(b.op)) {
-      check(b.right).isBoolean() 
-      check(b.left).isBoolean()
+    } else if (["andIoop", "||"].includes(b.op)) {
+      check(b.right).isBoolean();
+      check(b.left).isBoolean();
     }
 
     return b;

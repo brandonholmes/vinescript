@@ -1,4 +1,4 @@
-import util from 'util';
+import util from "util";
 
 export class Program {
   constructor(statements) {
@@ -14,10 +14,10 @@ export class Type {
     this.name = name;
   }
 
-  static DOUBLE = new Type('double');
-  static BOOLEAN = new Type('boolean');
-  static INT = new Type('int');
-  static STRING = new Type('string');
+  static DOUBLE = new Type("double");
+  static BOOLEAN = new Type("boolean");
+  static INT = new Type("int");
+  static STRING = new Type("string");
 
   isEquivalentTo(target) {
     return this == target;
@@ -26,7 +26,9 @@ export class Type {
 
 export class FunctionType extends Type {
   constructor(parameterTypes, returnType) {
-    super(`(${parameterTypes.map(t => t.name).join(',')})->${returnType.name}`);
+    super(
+      `(${parameterTypes.map((t) => t.name).join(",")})->${returnType.name}`
+    );
     Object.assign(this, { parameterTypes, returnType });
   }
 }
@@ -45,13 +47,13 @@ export class WhileLoop {
 
 export class FunctionDeclaration {
   constructor(header, body) {
-    Object.assign(this, { header, body })
+    Object.assign(this, { header, body });
   }
 }
 
 export class Function {
   constructor(name, parameters, returnType) {
-    Object.assign(this, { name, parameters, returnType })
+    Object.assign(this, { name, parameters, returnType });
   }
 }
 
@@ -146,7 +148,7 @@ function prettied(node) {
   const tags = new Map();
 
   function tag(node) {
-    if (tags.has(node) || typeof node !== 'object' || node === null) return;
+    if (tags.has(node) || typeof node !== "object" || node === null) return;
     tags.set(node, tags.size + 1);
     for (const child of Object.values(node)) {
       Array.isArray(child) ? child.forEach(tag) : tag(child);
@@ -160,12 +162,12 @@ function prettied(node) {
       return util.inspect(e);
     }
     for (let [node, id] of [...tags.entries()].sort((a, b) => a[1] - b[1])) {
-      let [type, props] = [node.constructor.name, ''];
+      let [type, props] = [node.constructor.name, ""];
       Object.entries(node).forEach(([k, v]) => (props += ` ${k}=${view(v)}`));
-      yield `${String(id).padStart(4, ' ')} | ${type}${props}`;
+      yield `${String(id).padStart(4, " ")} | ${type}${props}`;
     }
   }
 
   tag(node);
-  return [...lines()].join('\n');
+  return [...lines()].join("\n");
 }

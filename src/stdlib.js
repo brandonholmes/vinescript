@@ -1,4 +1,4 @@
-import { Type, Variable, Function } from './ast.js';
+import { Type, Variable, Function } from "./ast.js";
 
 function makeFunction(name, type) {
   return Object.assign(new Function(name), { type });
@@ -12,5 +12,5 @@ export const types = {
 };
 
 export const functions = {
-  print: makeFunction('print', new Function([Type.ANY], Type.VOID)),
+  print: makeFunction("print", new Function([Type.ANY], Type.VOID)),
 };

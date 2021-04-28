@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
-import fs from 'fs/promises';
-import process from 'process';
-import compile from './compiler.js';
+import fs from "fs/promises";
+import process from "process";
+import compile from "./compiler.js";
 
 const instructions = `vinescript compiler
 
