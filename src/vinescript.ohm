@@ -8,10 +8,10 @@ vinescript  {
   Body                    = Statement*
   Variable                = (lookAtThisGraph | const) id "=" Exp
   Assignment              = id "=" Exp
-  Print                   = print Exp
+  Print                   = youKnowWhatIAmGonnaSayIt Exp
   FuncCall                = ~keyword id "(" ListOf<Exp, ","> ")"
   WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" "{" Statement+ "}"
-  IfStatement             = bitchIhopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
+  IfStatement             = bitchIHopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
 
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
@@ -39,7 +39,7 @@ vinescript  {
 
   numlit                  = "-"? digit+ ("."digit+)? ("^"digit+)?
   strlit                  = "\"" (~"\""any)* "\""
-  print                   = "print" ~alnum
+  youKnowWhatIAmGonnaSayIt= "youKnowWhatIAmGonnaSayIt" ~alnum
   space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
   indecop 	              =  "++" | "--"
   type             		    = boolean | double | int | string
@@ -47,7 +47,7 @@ vinescript  {
   lookAtThisGraph  = "lookAtThisGraph" ~alnum
   const            = "const" ~alnum
   thatIsNotCorrect = "thatIsNotCorrect" ~alnum
-  bitchIhopeTheFuckYouDo = "bitchIhopeTheFuckYouDo" ~alnum
+  bitchIHopeTheFuckYouDo = "bitchIHopeTheFuckYouDo" ~alnum
   whenLifeGivesYouLemons   = "whenLifeGivesYouLemons" ~alnum
   iSureHopeItDoes  = "iSureHopeItDoes" ~alnum
   iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou" ~alnum
@@ -56,15 +56,16 @@ vinescript  {
   yeet             = "yeet" ~alnum
   orWhat           = "orWhat" ~alnum
   youreNotMyDad    = "youreNotMyDad" ~alnum
-  andIoop          = "andIoop" ~alnum
+  andIoop          = "andIoop" ~alnum 
   int              = "int" ~alnum
   string           = "string" ~alnum
   boolean          = "boolean" ~alnum
   double           = "double" ~alnum
   return           = "thisBitchEmpty" ~alnum
+
   
 
-  keyword     = bitchIhopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  print
+  keyword     = bitchIHopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  youKnowWhatIAmGonnaSayIt
               | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
               | int | string | boolean | double | thisBitchEmpty | yeet | const
 

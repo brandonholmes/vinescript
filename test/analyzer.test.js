@@ -14,12 +14,12 @@ const semanticChecks = [
   ],
   [
     "function declaration",
-    `whenLifeGivesYouLemons int lemonade(int d, int bb) { d = 34 bb = 35 print d + bb } `,
+    `whenLifeGivesYouLemons int lemonade(int d, int bb) { d = 34 bb = 35 youKnowWhatIAmGonnaSayIt d + bb } `,
   ],
   [
-    "printing a int is valid",
+    "youKnowWhatIAmGonnaSayIting a int is valid",
     `lookAtThisGraph myInt = 7
-     print myInt`,
+     youKnowWhatIAmGonnaSayIt myInt`,
   ],
   [
     "return int",
@@ -48,39 +48,48 @@ const semanticChecks = [
   ],
   ["increment operator", `lookAtThisGraph x = 7 x++`],
   ["decrement operator", `lookAtThisGraph x = 7 x--`],
-  ["and statement", `print (thatIsNotCorrect andIoop thatIsNotCorrect)`],
-  ["or statement", `print (thatIsNotCorrect || thatIsNotCorrect)`],
+  [
+    "and statement",
+    `youKnowWhatIAmGonnaSayIt (thatIsNotCorrect andIoop thatIsNotCorrect)`,
+  ],
+  [
+    "or statement",
+    `youKnowWhatIAmGonnaSayIt (thatIsNotCorrect || thatIsNotCorrect)`,
+  ],
   [
     "conditional",
-    `lookAtThisGraph x = 4 bitchIhopeTheFuckYouDo (x > 7) print 1 orWhat print 3`,
+    `lookAtThisGraph x = 4 bitchIHopeTheFuckYouDo (x > 7) youKnowWhatIAmGonnaSayIt 1 orWhat youKnowWhatIAmGonnaSayIt 3`,
   ],
   [
     "good types for >",
-    ` lookAtThisGraph x = 7 bitchIhopeTheFuckYouDo(x > 1) print 1 orWhat print 3`,
+    ` lookAtThisGraph x = 7 bitchIHopeTheFuckYouDo(x > 1) youKnowWhatIAmGonnaSayIt 1 orWhat youKnowWhatIAmGonnaSayIt 3`,
   ],
   [
     "While Loop",
-    `lookAtThisGraph x = 7 iAintGunnaStopLovinYou ( x > 7 ) { print x }`,
+    `lookAtThisGraph x = 7 iAintGunnaStopLovinYou ( x > 7 ) { youKnowWhatIAmGonnaSayIt x }`,
   ],
   [
     "While Loop with Boolean variable condition",
     `lookAtThisGraph happy = iSureHopeItDoes
-     iAintGunnaStopLovinYou ( happy ) { print "Dance" }`,
+     iAintGunnaStopLovinYou ( happy ) { youKnowWhatIAmGonnaSayIt "Dance" }`,
   ],
   ["break", `lookAtThisGraph x = 8 iAintGunnaStopLovinYou (x > 7) { yeet }`],
   [
     "break in while condition",
     `lookAtThisGraph x = 8
     iAintGunnaStopLovinYou (x > 7) {
-      bitchIhopeTheFuckYouDo(x < 2)
+      bitchIHopeTheFuckYouDo(x < 2)
       yeet
     }`,
   ],
   ["negation", `lookAtThisGraph x = youreNotMyDad thatIsNotCorrect`],
-  ["conditional without else", `bitchIhopeTheFuckYouDo(7 > 6) print 8`],
+  [
+    "conditional without else",
+    `bitchIHopeTheFuckYouDo(7 > 6) youKnowWhatIAmGonnaSayIt 8`,
+  ],
   [
     "conditional with else",
-    `bitchIhopeTheFuckYouDo(8 > 5) print 9 print 7 orWhat lookAtThisGraph x = 7 print x`,
+    `bitchIHopeTheFuckYouDo(8 > 5) youKnowWhatIAmGonnaSayIt 9 youKnowWhatIAmGonnaSayIt 7 orWhat lookAtThisGraph x = 7 youKnowWhatIAmGonnaSayIt x`,
   ],
   [
     "function call",
@@ -93,7 +102,7 @@ const semanticChecks = [
   ],
   [
     "function with multiple parameters",
-    `whenLifeGivesYouLemons int myFunc(int x, int y) {print x + y}`,
+    `whenLifeGivesYouLemons int myFunc(int x, int y) {youKnowWhatIAmGonnaSayIt x + y}`,
   ],
   [
     "long program",
@@ -106,8 +115,8 @@ const semanticChecks = [
 
     iAintGunnaStopLovinYou (start < end) {
         start = myGenerator(start)
-        bitchIhopeTheFuckYouDo((start / 2) != 0) 
-            print start
+        bitchIHopeTheFuckYouDo((start / 2) != 0) 
+            youKnowWhatIAmGonnaSayIt start
         
     }`,
   ],
@@ -118,28 +127,28 @@ const semanticErrors = [
     "compare int and string",
     `lookAtThisGraph x = 7
     lookAtThisGraph y = "myString"
-    bitchIhopeTheFuckYouDo(x andIoop y) print 8`,
+    bitchIHopeTheFuckYouDo(x andIoop y) youKnowWhatIAmGonnaSayIt 8`,
     /Expected a boolean, found string/,
   ],
   [
     "compare int or string",
     `lookAtThisGraph x = 7
     lookAtThisGraph y = "myString"
-    bitchIhopeTheFuckYouDo(x || y) print 8`,
+    bitchIHopeTheFuckYouDo(x || y) youKnowWhatIAmGonnaSayIt 8`,
     /Expected a boolean, found string/,
   ],
   [
     "compare int and boolean",
     `lookAtThisGraph x = 7
     lookAtThisGraph y = thatIsNotCorrect
-    bitchIhopeTheFuckYouDo(x > y) print 8`,
+    bitchIHopeTheFuckYouDo(x > y) youKnowWhatIAmGonnaSayIt 8`,
     /Operands do not have the same type/,
   ],
   [
     "compare int and string",
     `lookAtThisGraph x = 7
     lookAtThisGraph y = "myString"
-    bitchIhopeTheFuckYouDo(x > y) print 8`,
+    bitchIHopeTheFuckYouDo(x > y) youKnowWhatIAmGonnaSayIt 8`,
     /Operands do not have the same type/,
   ],
   [
@@ -174,8 +183,8 @@ const semanticErrors = [
   ],
   [
     "invalid conditional expression",
-    `bitchIhopeTheFuckYouDo("hello" > 7)
-    print 3`,
+    `bitchIHopeTheFuckYouDo("hello" > 7)
+    youKnowWhatIAmGonnaSayIt 3`,
     /Operands do not have the same type/,
   ],
   ["variable not declared", `x = 7`, /Identifier x not declared/],
@@ -217,7 +226,7 @@ const semanticErrors = [
   ],
   [
     "bad types for ==",
-    "print(thatIsNotCorrect==1)",
+    "youKnowWhatIAmGonnaSayIt(thatIsNotCorrect==1)",
     /Operands do not have the same type/,
   ],
   [

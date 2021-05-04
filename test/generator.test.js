@@ -20,7 +20,7 @@ const programs = [
   {
     name: "simple function",
     source: `
-            whenLifeGivesYouLemons int myFunc(int y) { print y }
+            whenLifeGivesYouLemons int myFunc(int y) { youKnowWhatIAmGonnaSayIt y }
             `,
     expected: dedent(`
             function myFunc_1(y_2) {
@@ -49,7 +49,7 @@ const programs = [
   },
   {
     name: "if statement",
-    source: `lookAtThisGraph x = 4 bitchIhopeTheFuckYouDo (x > 7) print 1 orWhat print 3`,
+    source: `lookAtThisGraph x = 4 bitchIHopeTheFuckYouDo (x > 7) youKnowWhatIAmGonnaSayIt 1 orWhat youKnowWhatIAmGonnaSayIt 3`,
     expected: dedent(`
             let x_1 = 4;
             if(x_1 > 7) {
@@ -61,7 +61,7 @@ const programs = [
   },
   {
     name: "while statement",
-    source: `lookAtThisGraph happy = thatIsNotCorrect iAintGunnaStopLovinYou ( happy ) { print "Dance" }`,
+    source: `lookAtThisGraph happy = thatIsNotCorrect iAintGunnaStopLovinYou ( happy ) { youKnowWhatIAmGonnaSayIt "Dance" }`,
     expected: dedent(`
             let happy_1 = false;
             while(happy_1) {
@@ -71,7 +71,7 @@ const programs = [
   },
   {
     name: "if without else",
-    source: `bitchIhopeTheFuckYouDo(7 > 6) print 8`,
+    source: `bitchIHopeTheFuckYouDo(7 > 6) youKnowWhatIAmGonnaSayIt 8`,
     expected: dedent(`
             if(7 > 6) {
                 console.log(8);
@@ -80,7 +80,7 @@ const programs = [
   },
   {
     name: "multiple parameter function",
-    source: `whenLifeGivesYouLemons int myFunc(int x, int y) {print x + y}`,
+    source: `whenLifeGivesYouLemons int myFunc(int x, int y) {youKnowWhatIAmGonnaSayIt x + y}`,
     expected: dedent(`
             function myFunc_1(x_2, y_3) {
                 console.log(x_2 + y_3);
@@ -133,8 +133,8 @@ const programs = [
 
             iAintGunnaStopLovinYou (start < end) {
                 start = myGenerator(start)
-                bitchIhopeTheFuckYouDo((start / 2) != 0) 
-                    print start
+                bitchIHopeTheFuckYouDo((start / 2) != 0) 
+                    youKnowWhatIAmGonnaSayIt start
                 
             }
         `,

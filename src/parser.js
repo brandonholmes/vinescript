@@ -62,7 +62,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.WhileLoop(expressions.tree(), body.tree());
   },
   IfStatement(
-    _bitchIhopeTheFuckYouDo,
+    _bitchIHopeTheFuckYouDo,
     _left,
     expression,
     _right,
