@@ -86,9 +86,9 @@ whenLifeGivesYouLemons int fibonacci(int n) {
             lookAtThisGraph z = x + y
             x = y
             y = z
+            i++
         }
         thisBitchEmpty y
-
 }
 lookAtThisGraph times = 10
 fibonacci(times)
