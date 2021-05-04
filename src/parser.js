@@ -51,7 +51,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.Print(argument.tree());
   },
   WhileLoop(
-    _iAintGunnaStopLovinYou,
+    _iAintNevaGunnaStopLuvinYouBiiitch,
     _left,
     expressions,
     _right,

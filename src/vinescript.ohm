@@ -10,7 +10,7 @@ vinescript  {
   Assignment              = id "=" Exp
   Print                   = youKnowWhatIAmGonnaSayIt Exp
   FuncCall                = ~keyword id "(" ListOf<Exp, ","> ")"
-  WhileLoop               = iAintGunnaStopLovinYou "(" Exp ")" "{" Statement+ "}"
+  WhileLoop               = iAintNevaGunnaStopLuvinYouBiiitch "(" Exp ")" "{" Statement+ "}"
   IfStatement             = bitchIHopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
 
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
@@ -50,7 +50,7 @@ vinescript  {
   bitchIHopeTheFuckYouDo = "bitchIHopeTheFuckYouDo" ~alnum
   whenLifeGivesYouLemons   = "whenLifeGivesYouLemons" ~alnum
   iSureHopeItDoes  = "iSureHopeItDoes" ~alnum
-  iAintGunnaStopLovinYou = "iAintGunnaStopLovinYou" ~alnum
+  iAintNevaGunnaStopLuvinYouBiiitch = "iAintNevaGunnaStopLuvinYouBiiitch" ~alnum
   thisBitchEmpty   = "thisBitchEmpty" ~alnum
   break            =  yeet
   yeet             = "yeet" ~alnum
@@ -66,7 +66,7 @@ vinescript  {
   
 
   keyword     = bitchIHopeTheFuckYouDo | orWhat | lookAtThisGraph | iSureHopeItDoes | thatIsNotCorrect |  youKnowWhatIAmGonnaSayIt
-              | whenLifeGivesYouLemons | iAintGunnaStopLovinYou | youreNotMyDad
+              | whenLifeGivesYouLemons | iAintNevaGunnaStopLuvinYouBiiitch | youreNotMyDad
               | int | string | boolean | double | thisBitchEmpty | yeet | const
 
   id          =  ~keyword letter idrest*

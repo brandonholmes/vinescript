@@ -61,7 +61,7 @@ const programs = [
   },
   {
     name: "while statement",
-    source: `lookAtThisGraph happy = thatIsNotCorrect iAintGunnaStopLovinYou ( happy ) { youKnowWhatIAmGonnaSayIt "Dance" }`,
+    source: `lookAtThisGraph happy = thatIsNotCorrect iAintNevaGunnaStopLuvinYouBiiitch ( happy ) { youKnowWhatIAmGonnaSayIt "Dance" }`,
     expected: dedent(`
             let happy_1 = false;
             while(happy_1) {
@@ -113,7 +113,7 @@ const programs = [
   },
   {
     name: "break",
-    source: `lookAtThisGraph x = 8 iAintGunnaStopLovinYou (x > 7) { yeet }`,
+    source: `lookAtThisGraph x = 8 iAintNevaGunnaStopLuvinYouBiiitch (x > 7) { yeet }`,
     expected: dedent(`
             let x_1 = 8;
             while(x_1 > 7) {
@@ -131,7 +131,7 @@ const programs = [
                 thisBitchEmpty x + 1
             }
 
-            iAintGunnaStopLovinYou (start < end) {
+            iAintNevaGunnaStopLuvinYouBiiitch (start < end) {
                 start = myGenerator(start)
                 bitchIHopeTheFuckYouDo((start / 2) != 0) 
                     youKnowWhatIAmGonnaSayIt start

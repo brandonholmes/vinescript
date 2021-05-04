@@ -66,18 +66,21 @@ const semanticChecks = [
   ],
   [
     "While Loop",
-    `lookAtThisGraph x = 7 iAintGunnaStopLovinYou ( x > 7 ) { youKnowWhatIAmGonnaSayIt x }`,
+    `lookAtThisGraph x = 7 iAintNevaGunnaStopLuvinYouBiiitch ( x > 7 ) { youKnowWhatIAmGonnaSayIt x }`,
   ],
   [
     "While Loop with Boolean variable condition",
     `lookAtThisGraph happy = iSureHopeItDoes
-     iAintGunnaStopLovinYou ( happy ) { youKnowWhatIAmGonnaSayIt "Dance" }`,
+     iAintNevaGunnaStopLuvinYouBiiitch ( happy ) { youKnowWhatIAmGonnaSayIt "Dance" }`,
   ],
-  ["break", `lookAtThisGraph x = 8 iAintGunnaStopLovinYou (x > 7) { yeet }`],
+  [
+    "break",
+    `lookAtThisGraph x = 8 iAintNevaGunnaStopLuvinYouBiiitch (x > 7) { yeet }`,
+  ],
   [
     "break in while condition",
     `lookAtThisGraph x = 8
-    iAintGunnaStopLovinYou (x > 7) {
+    iAintNevaGunnaStopLuvinYouBiiitch (x > 7) {
       bitchIHopeTheFuckYouDo(x < 2)
       yeet
     }`,
@@ -113,7 +116,7 @@ const semanticChecks = [
         thisBitchEmpty x + 1
     }
 
-    iAintGunnaStopLovinYou (start < end) {
+    iAintNevaGunnaStopLuvinYouBiiitch (start < end) {
         start = myGenerator(start)
         bitchIHopeTheFuckYouDo((start / 2) != 0) 
             youKnowWhatIAmGonnaSayIt start

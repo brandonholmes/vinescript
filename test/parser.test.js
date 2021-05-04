@@ -27,7 +27,7 @@ const goodPrograms = [
     youKnowWhatIAmGonnaSayIt a
     return a
   }`,
-  `iAintGunnaStopLovinYou(x < 5) { x++ }`,
+  `iAintNevaGunnaStopLuvinYouBiiitch(x < 5) { x++ }`,
   `bitchIHopeTheFuckYouDo(x andIoop y) youKnowWhatIAmGonnaSayIt 14 / 2 orWhat youKnowWhatIAmGonnaSayIt 14 * 2`,
   `bitchIHopeTheFuckYouDo(x > 5) x = 7 orWhat x = -7`,
   `lookAtThisGraph greeting = "Hello World"
@@ -39,7 +39,7 @@ const goodPrograms = [
            lookAtThisGraph x = 0
            lookAtThisGraph y = 1
            lookAtThisGraph i = 1
-           iAintGunnaStopLovinYou(i < n) {
+           iAintNevaGunnaStopLuvinYouBiiitch(i < n) {
                lookAtThisGraph z = x + y
                x = y
                y = z
