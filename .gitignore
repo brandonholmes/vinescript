@@ -1,2 +1,5 @@
 .idea
 html5upElements.html
+node_modules
+docs
+coverage
