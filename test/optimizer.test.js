@@ -46,6 +46,7 @@ const tests = [
   ["optimizes 0+", new ast.BinaryExpression("+", 0, x), x],
   ["optimizes 0-", new ast.BinaryExpression("-", 0, x), neg(x)],
   ["optimizes 1*", new ast.BinaryExpression("*", 1, x), x],
+  //change negation to youreNotMyDad
   ["folds negation", new ast.UnaryExpression("-", 8), -8],
   ["optimizes 1**", new ast.BinaryExpression("**", 1, x), 1],
   ["optimizes **0", new ast.BinaryExpression("**", x, 0), 1],
