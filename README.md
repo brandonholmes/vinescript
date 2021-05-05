@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Welcome to VineScript, the nostalgic script that takes your programs back to the 2012 era. Each expression elicits memories of simpler times. Check out our website [Vinescript website](https://brandonholmes.github.io/vinescript/)
+Welcome to VineScript, the nostalgic script that takes your programs back to the 2012 era. Each expression elicits memories of simpler times. Please check out our website or the most up to date information: [Vinescript website](https://brandonholmes.github.io/vinescript/)
 
 ## Features
 
@@ -12,7 +12,6 @@ Welcome to VineScript, the nostalgic script that takes your programs back to the
 - While Loops
 - True/False
 - And/Not
-- Arrays
 - Statically Typed
 - `.vine` file extension
 - Nostalgia
@@ -31,20 +30,16 @@ whenLifeGiveYouLemons myFunction(param1) {
 }
 ```
 
-#### Arrays
-
-`lookAtAllThoseChickens`
-
 #### While Loops
 
 ```
-iAintGunnaStoplovinYou()
+iAintNevaGunnaStopLuvinYouBiiitch()
 ```
 
 #### If/Else
 
 ```
-bitchIhopeTheFuckYouDo(x > 5)
+bitchIHopeTheFuckYouDo(x > 5)
 
 orWhat
 ```
@@ -65,18 +60,22 @@ orWhat
 
 `THATSMYOPINION this is a comment`
 
+### console.log()
+
+`youKnowWhatIAmGonnaSayIt "Hello World"`
+
 ### Hello World
 
 ```
 lookAtThisGraph greeting = "Hello World"
-print greeting
+youKnowWhatIAmGonnaSayIt greeting
 ```
 
 ### Fibonacci
 
 ```
 whenLifeGivesYouLemons int fibonacci(int n) {
-    bitchIhopeTheFuckYouDo(n == 0)
+    bitchIHopeTheFuckYouDo(n == 0)
         thisBitchEmpty 0
     orWhat
         lookAtThisGraph x = 0
@@ -98,7 +97,7 @@ fibonacci(times)
 
 ```
 whenLifeGivesYouLemons int recursiveGCD(int x, int y) {
-    bitchIhopeTheFuckYouDo(y == 0)
+    bitchIHopeTheFuckYouDo(y == 0)
         thisBitchEmpty x
     orWhat
         thisBitchEmpty recursiveGCD(y, x % y)
