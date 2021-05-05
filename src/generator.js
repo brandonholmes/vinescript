@@ -1,3 +1,4 @@
+import { IfStatement } from "./ast.js";
 import * as stdlib from "../src/stdlib.js";
 
 export default function generate(program) {
@@ -33,6 +34,7 @@ export default function generate(program) {
       output.push(`console.log(${gen(p.argument)});`);
     },
     BinaryExpression(b) {
+      const op = { "==": "===", "!=": "!==" }[b.op] ?? b.op;
       return `${gen(b.left)} ${b.op} ${gen(b.right)}`;
     },
     UnaryExpression(u) {

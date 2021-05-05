@@ -11,7 +11,7 @@
 //   - turn references to built-ins true and false to be literals
 //   - remove all disjuncts in || list after literal true
 //   - remove all conjuncts in && list after literal false
-//   - while-false becomes a no-op
+//   - while-false becomes a no-opa
 //   - repeat-0 is a no-op
 //   - for-loop over empty array is a no-op
 //   - for-loop with low > high is a no-op
@@ -28,21 +28,15 @@ const optimizers = {
     p.statements = optimize(p.statements);
     return p;
   },
-  VariableDeclaration(d) {
-    d.initializer = optimize(d.initializer);
-    return d;
+  VariableDeclaration(v) {
+    v.initializer = optimize(v.initializer);
+    return v;
   },
-  TypeDeclaration(d) {
-    return d;
-  },
-  StructType(d) {
-    return d;
-  },
-  FunctionDeclaration(d) {
-    console.log(d);
-    console.log(d.fun);
-    d.body = optimize(d.body);
-    return d;
+  FunctionDeclaration(f) {
+    console.log(f);
+    console.log(f.header);
+    f.body = optimize(f.body);
+    return f;
   },
   Variable(v) {
     return v;
@@ -53,12 +47,6 @@ const optimizers = {
   },
   Parameter(p) {
     return p;
-  },
-  Increment(s) {
-    return s;
-  },
-  Decrement(s) {
-    return s;
   },
   Assignment(s) {
     s.source = optimize(s.source);
@@ -75,9 +63,6 @@ const optimizers = {
     s.expression = optimize(s.expression);
     return s;
   },
-  ShortReturnStatement(s) {
-    return s;
-  },
   IfStatement(s) {
     s.test = optimize(s.test);
     s.consequent = optimize(s.consequent);
@@ -87,53 +72,16 @@ const optimizers = {
     }
     return s;
   },
-  ShortIfStatement(s) {
-    s.test = optimize(s.test);
-    s.consequent = optimize(s.consequent);
-    if (s.test.constructor === Boolean) {
-      return s.test ? s.consequent : [];
-    }
-    return s;
-  },
-  WhileStatement(s) {
-    s.test = optimize(s.test);
-    if (s.test === false) {
+  whileLoop(w) {
+    w.test = optimize(w.test);
+    if (w.test === false) {
       // while false is a no-op
       return [];
     }
-    s.body = optimize(s.body);
-    return s;
+    w.body = optimize(w.body);
+    return w;
   },
-  RepeatStatement(s) {
-    s.count = optimize(s.count);
-    if (s.count === 0) {
-      // repeat 0 times is a no-op
-      return [];
-    }
-    s.body = optimize(s.body);
-    return s;
-  },
-  ForRangeStatement(s) {
-    s.low = optimize(s.low);
-    s.high = optimize(s.high);
-    s.body = optimize(s.body);
-    if (s.low.constructor === Number) {
-      if (s.high.constructor === Number) {
-        if (s.low > s.high) {
-          return [];
-        }
-      }
-    }
-    return s;
-  },
-  ForStatement(s) {
-    s.collection = optimize(s.collection);
-    s.body = optimize(s.body);
-    if (s.collection.constructor === ast.EmptyArray) {
-      return [];
-    }
-    return s;
-  },
+
   Conditional(e) {
     e.test = optimize(e.test);
     e.consequent = optimize(e.consequent);
@@ -143,6 +91,8 @@ const optimizers = {
     }
     return e;
   },
+
+  //CODE FROM CARLOS, we also might need to look at our binary expression in our generator?
   BinaryExpression(e) {
     e.left = optimize(e.left);
     e.right = optimize(e.right);
@@ -196,30 +146,11 @@ const optimizers = {
     }
     return e;
   },
-  EmptyOptional(e) {
-    return e;
-  },
-  SubscriptExpression(e) {
-    e.array = optimize(e.array);
-    e.index = optimize(e.index);
-    return e;
-  },
-  ArrayExpression(e) {
-    e.elements = optimize(e.elements);
-    return e;
-  },
-  EmptyArray(e) {
-    return e;
-  },
-  MemberExpression(e) {
-    e.object = optimize(e.object);
-    return e;
-  },
-  Call(c) {
-    c.callee = optimize(c.callee);
-    c.args = optimize(c.args);
-    return c;
-  },
+  //   FuncCall(c) {
+  //     c.callee = optimize(c.callee);
+  //     c.args = optimize(c.args);
+  //     return c;
+  //   },
   BigInt(e) {
     return e;
   },
