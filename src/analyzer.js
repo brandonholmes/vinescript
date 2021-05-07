@@ -48,6 +48,12 @@ const check = (self) => ({
       "Operands do not have the same type"
     );
   },
+  allHaveSameType() {
+    must(
+      self.slice(1).every(e => e.type.isEquivalentTo(self[0].type)),
+      "Not all elements have the same type"
+    )
+  },
   isAssignableTo(type) {
     must(
       self.type === type || self.type.returnType === type,
@@ -118,6 +124,11 @@ class Context {
   }
   Array(a) {
     return a.map((item) => this.analyze(item));
+  }
+  ArrayExpression(a) {
+    a.elements = this.analyze(a.elements)
+    check(a.elements).allHaveSameType()
+    return a
   }
   VariableDeclaration(v) {
     v.expression = this.analyze(v.expression);

@@ -5,6 +5,7 @@ import * as ast from "../src/ast.js";
 import util from "util";
 
 const semanticChecks = [
+  ["array declaration", `lookAtThisGraph x = [5, 7]`],
   ["int declaration", `lookAtThisGraph z = 4`],
   ["boolean declaration", `lookAtThisGraph z = thatIsNotCorrect`],
   ["string declaration", `lookAtThisGraph z = "HelloWorld"`],
@@ -161,6 +162,11 @@ const semanticErrors = [
       thisBitchEmpty x
     }`,
     /Identifier x already declared/,
+  ],
+  [
+    "rejects arrays of mixed types",
+    `lookAtThisGraph x = [5, "boo"]`,
+    /Not all elements have the same type/    
   ],
   [
     "return type mismatch",

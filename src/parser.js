@@ -107,6 +107,9 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   PrimaryExp_break(_break) {
     return new ast.BreakStatement();
   },
+  PrimaryExp_arrayexp(_left, args, _right) {
+    return new ast.ArrayExpression(args.asIteration().tree())
+  },
   FuncCall(callee, _left, args, _right) {
     return new ast.FuncCall(callee.tree(), args.tree());
   },

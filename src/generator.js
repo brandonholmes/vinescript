@@ -68,6 +68,9 @@ export default function generate(program) {
     BreakStatement() {
       output.push(`break;`);
     },
+    ArrayExpression(e) {
+      return `[${gen(e.elements).join(", ")}]`
+    },
     FuncCall(f, inAssign = false) {
       if (inAssign === true) {
         return `${gen(f.callee)}(${gen(f.args).join(", ")})`;

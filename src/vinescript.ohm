@@ -11,7 +11,7 @@ vinescript  {
   Print                   = youKnowWhatIAmGonnaSayIt Exp
   FuncCall                = ~keyword id "(" ListOf<Exp, ","> ")"
   WhileLoop               = iAintNevaGunnaStopLuvinYouBiiitch "(" Exp ")" "{" Statement+ "}"
-  IfStatement             = bitchIHopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)*
+  IfStatement             = bitchIHopeTheFuckYouDo "(" Exp ")" Statement+ ("orWhat" Statement+)?
 
   Exp                     = Exp ("+"|"-") LogExp                          --plusminus
                           | Exp indecop                                   --increment
@@ -32,6 +32,7 @@ vinescript  {
                           | numlit
                           | strlit
                           | IfStatement
+                          | "[" NonemptyListOf<Exp, ","> "]" ~mut         --arrayexp
                           | return Exp                                     --return
                           | break                                           --break
 
@@ -43,6 +44,7 @@ vinescript  {
   space                  += "THATSMYOPINION" (~"\n" any)* ("\n" | end)  --comment
   indecop 	              =  "++" | "--"
   type             		    = boolean | double | int | string
+  mut                     = ~"==" "=" | "++" | "--"
 
   lookAtThisGraph  = "lookAtThisGraph" ~alnum
   const            = "const" ~alnum

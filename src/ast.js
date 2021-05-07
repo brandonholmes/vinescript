@@ -117,6 +117,12 @@ export class NegExpression {
   }
 }
 
+export class ArrayExpression {
+  constructor(elements) {
+    this.elements = elements
+  }
+}
+
 export class IdentifierExpression {
   constructor(name) {
     this.name = name;

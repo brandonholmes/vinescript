@@ -14,6 +14,7 @@ const expectedAST = new ast.Program([
 ]);
 
 const goodPrograms = [
+  `["myFirst", "mySecond", "myThird"]`,
   `lookAtThisGraph x = 5`,
   `whenLifeGivesYouLemons int myFunction(int y) {
         lookAtThisGraph x = 5 

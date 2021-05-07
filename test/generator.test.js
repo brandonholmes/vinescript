@@ -29,6 +29,15 @@ const programs = [
         `),
   },
   {
+    name: "basic array",
+    source: `
+            lookAtThisGraph x = [7, 5]
+    `,
+    expected: dedent(`
+            let x_1 = [7, 5];
+    `),
+  },
+  {
     name: "binary expression",
     source: `
             lookAtThisGraph x = 7

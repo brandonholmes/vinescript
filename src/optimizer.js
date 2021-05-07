@@ -20,7 +20,6 @@
 import * as ast from "./ast.js";
 
 export default function optimize(node) {
-  console.log(node.constructor.name)
   return optimizers[node.constructor.name](node);
 }
 
@@ -35,13 +34,14 @@ const optimizers = {
   },
   FunctionDeclaration(f) {
     f.body = optimize(f.body);
+    f.header = optimize(f.header);
     return f;
   },
   Variable(v) {
     return v;
   },
   Function(f) {
-    f.body = optimize(f.body)
+    f.parameters = optimize(f.parameters);
     return f;
   },
   Parameter(p) {
@@ -133,6 +133,19 @@ const optimizers = {
     c.callee = optimize(c.callee);
     c.args = optimize(c.args);
     return c;
+  },
+  NegExpression(n) {
+    n.left = optimize(n.left);
+    if(n.left.type.name === "boolean") {
+      if(n.op === "youreNotMyDad") {
+        return !n.left;
+      }
+    }
+    return n.left;
+  },
+  ArrayExpression(e) {
+    e.elements = optimize(e.elements)
+    return e
   },
   BigInt(e) {
     return e;
