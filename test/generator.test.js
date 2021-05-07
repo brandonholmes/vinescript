@@ -131,6 +131,13 @@ const programs = [
         `),
   },
   {
+    name: "print statement",
+    source: `youKnowWhatIAmGonnaSayIt "Hello World"`,
+    expected: dedent(`
+            console.log("Hello World");
+    `)
+  },
+  {
     name: "long function",
     source: `
             lookAtThisGraph start = 1
