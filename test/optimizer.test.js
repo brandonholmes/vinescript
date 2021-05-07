@@ -13,8 +13,8 @@ const onePlusTwo = new ast.BinaryExpression("+", 1, 2);
 const identity = Object.assign(new ast.Function("id"), { body: returnX });
 const intFun = (body) => new ast.FunctionDeclaration("f", [], "int", body);
 const callIdentity = (args) => new ast.FuncCall(identity, args);
-// const or = (...d) => d.reduce((x, y) => new ast.BinaryExpression("||", x, y));
-// const and = (...c) => c.reduce((x, y) => new ast.BinaryExpression("&&", x, y));
+const or = (...d) => d.reduce((x, y) => new ast.BinaryExpression("||", x, y));
+const and = (...c) => c.reduce((x, y) => new ast.BinaryExpression("andIoop", x, y));
 const less = (x, y) => new ast.BinaryExpression("<", x, y);
 const eq = (x, y) => new ast.BinaryExpression("==", x, y);
 const times = (x, y) => new ast.BinaryExpression("*", x, y);
@@ -51,10 +51,10 @@ const tests = [
   ["folds negation", new ast.UnaryExpression("-", 8), -8],
   ["optimizes 1**", new ast.BinaryExpression("**", 1, x), 1],
   ["optimizes **0", new ast.BinaryExpression("**", x, 0), 1],
-  //   ["removes left false from ||", or(false, less(x, 1)), less(x, 1)],
-  //   ["removes right false from ||", or(less(x, 1), false), less(x, 1)],
-  //   ["removes left true from &&", and(true, less(x, 1)), less(x, 1)],
-  //   ["removes right true from &&", and(less(x, 1), true), less(x, 1)],
+  ["removes left false from ||", or(false, less(x, 1)), less(x, 1)],
+  ["removes right false from ||", or(less(x, 1), false), less(x, 1)],
+  ["removes left true from &&", and(true, less(x, 1)), less(x, 1)],
+  ["removes right true from &&", and(less(x, 1), true), less(x, 1)],
   ["removes x=x at beginning", [new ast.Assignment(x, x), xpp], [xpp]],
   ["removes x=x at end", [xpp, new ast.Assignment(x, x)], [xpp]],
   ["removes x=x in middle", [xpp, new ast.Assignment(x, x), xpp], [xpp, xpp]],
