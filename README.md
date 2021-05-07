@@ -13,6 +13,7 @@ Welcome to VineScript, the nostalgic script that takes your programs back to the
 - True/False
 - And/Not
 - Statically Typed
+- Arrays
 - `.vine` file extension
 - Nostalgia
 
