@@ -2,7 +2,6 @@ import assert from "assert";
 import optimize from "../src/optimizer.js";
 import * as ast from "../src/ast.js";
 
-// Make some test cases easier to read
 const x = new ast.Variable("x", false);
 const xpp = new ast.UnaryExpression("++", x)
 const xmm = new ast.UnaryExpression("--", x)
@@ -20,7 +19,6 @@ const less = (x, y) => new ast.BinaryExpression("<", x, y);
 const eq = (x, y) => new ast.BinaryExpression("==", x, y);
 const times = (x, y) => new ast.BinaryExpression("*", x, y);
 const neg = (x) => new ast.UnaryExpression("-", x);
-//const array = (...elements) => new ast.ArrayExpression(elements);
 const unwrapElse = (o, e) => new ast.BinaryExpression("??", o, e);
 const conditional = (x, y, z) => new ast.IfStatement(x, y, z);
 const some = (x) => new ast.UnaryExpression("some", x);
@@ -71,7 +69,6 @@ const tests = [
   ["optimizes left conditional true", conditional(true, 55, 89), 55],
   ["optimizes left conditional false", conditional(false, 55, 89), 89],
   ["optimizes in functions", intFun(return1p1), intFun(return2)],
-  //["optimizes in array literals", array(0, onePlusTwo, 9), array(0, 3, 9)],
   ["optimizes in arguments", callMyFunction([times(3, 5)]), callMyFunction([15])],
   ["optimizes break statement", new ast.BreakStatement(), breakStatement],
   ["optimizes assignment", new ast.Assignment("x", 7 + 5), new ast.Assignment("x", 12)],

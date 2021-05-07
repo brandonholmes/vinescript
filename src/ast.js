@@ -63,14 +63,12 @@ export class Parameter {
   }
 }
 
-//VariableDeclaration(_lookAtThisGraph, type, name, _equal, expressions)
 export class VariableDeclaration {
   constructor(variable, expression) {
     Object.assign(this, { variable, expression });
   }
 }
 
-// Created during semantic analysis only!
 export class Variable {
   constructor(name, readOnly) {
     Object.assign(this, { name, readOnly });
@@ -136,9 +134,7 @@ export class FuncCall {
 }
 
 function prettied(node) {
-  // Return a compact and pretty string representation of the node graph,
-  // taking care of cycles. Written here from scratch because the built-in
-  // inspect function, while nice, isn't nice enough.
+  // Return a compact and pretty string of the graph
   const tags = new Map();
 
   function tag(node) {

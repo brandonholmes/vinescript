@@ -38,9 +38,6 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
       expression.tree()
     );
   },
-  //Params(paramList) {
-  //  return paramList.asIteration().tree();
-  //},
   Param(type, id) {
     return new ast.Parameter(type.tree(), id.sourceString);
   },
@@ -93,15 +90,11 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   },
   NegExp_negation(op, expression) {
     return new ast.NegExpression(op.sourceString, expression.tree());
-  } /*
-  NegExp_negative(_neg, expression) {
-    return new ast.NegExpression(_neg.tree(), expression.tree())
-  },*/,
+  },
   PrimaryExp_paren(_left, statement, _right) {
     return statement.tree();
   },
   PrimaryExp_return(_return, expression) {
-    //const returnValue = expression.tree()
     return new ast.ReturnStatement(expression.tree());
   },
   PrimaryExp_break(_break) {
@@ -122,9 +115,6 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   int(_) {
     return ast.Type.INT;
   },
-  //boolean(_) {
-  //  return ast.Type.BOOLEAN;
-  //},
   string(_) {
     return ast.Type.STRING;
   },
@@ -145,9 +135,6 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   thatIsNotCorrect(_) {
     return false;
   },
-  //_terminal() {
-  //  return this.sourceString;
-  //},
 });
 
 export default function parse(sourceCode) {
