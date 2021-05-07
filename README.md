@@ -14,6 +14,7 @@ Welcome to VineScript, the nostalgic script that takes your programs back to the
 - And/Not
 - Statically Typed
 - Arrays
+- Comments
 - `.vine` file extension
 - Nostalgia
 
