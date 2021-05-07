@@ -116,19 +116,7 @@ export class NegExpression {
     Object.assign(this, { op, left });
   }
 }
-/*
-export class PrefixExpression {
-    constructor(op, right) {
-      Object.assign(this, { op, right });
-    }
-}
 
-export class PostfixExpression {
-    constructor(left, op) {
-      Object.assign(this, { left, op });
-    }
-}
-*/
 export class IdentifierExpression {
   constructor(name) {
     this.name = name;

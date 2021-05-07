@@ -20,6 +20,7 @@
 import * as ast from "./ast.js";
 
 export default function optimize(node) {
+  console.log(node.constructor.name)
   return optimizers[node.constructor.name](node);
 }
 
@@ -29,12 +30,10 @@ const optimizers = {
     return p;
   },
   VariableDeclaration(v) {
-    v.initializer = optimize(v.initializer);
+    v.expression = optimize(v.expression);
     return v;
   },
   FunctionDeclaration(f) {
-    console.log(f);
-    console.log(f.header);
     f.body = optimize(f.body);
     return f;
   },
@@ -42,7 +41,7 @@ const optimizers = {
     return v;
   },
   Function(f) {
-    // f.body = optimize(f.body)
+    f.body = optimize(f.body)
     return f;
   },
   Parameter(p) {
@@ -64,44 +63,28 @@ const optimizers = {
     return s;
   },
   IfStatement(s) {
-    s.test = optimize(s.test);
-    s.consequent = optimize(s.consequent);
-    s.alternate = optimize(s.alternate);
-    if (s.test.constructor === Boolean) {
-      return s.test ? s.consequent : s.alternate;
+    s.expression = optimize(s.expression);
+    s.statements = optimize(s.statements);
+    s.elseStatements = optimize(s.elseStatements);
+    if (s.expression.constructor === Boolean) {
+      return s.expression ? s.statements : s.elseStatements;
     }
     return s;
   },
-  whileLoop(w) {
-    w.test = optimize(w.test);
-    if (w.test === false) {
-      // while false is a no-op
+  WhileLoop(w) {
+    w.expression = optimize(w.expression);
+    if (w.expression === false) {
       return [];
     }
     w.body = optimize(w.body);
     return w;
   },
 
-  Conditional(e) {
-    e.test = optimize(e.test);
-    e.consequent = optimize(e.consequent);
-    e.alternate = optimize(e.alternate);
-    if (e.test.constructor === Boolean) {
-      return e.test ? e.consequent : e.alternate;
-    }
-    return e;
-  },
-
   //CODE FROM CARLOS, we also might need to look at our binary expression in our generator?
   BinaryExpression(e) {
     e.left = optimize(e.left);
     e.right = optimize(e.right);
-    if (e.op === "??") {
-      // Coalesce Empty Optional Unwraps
-      if (e.left.constructor === ast.EmptyOptional) {
-        return e.right;
-      }
-    } else if (e.op === "&&") {
+    if (e.op === "andIoop") {
       // Optimize boolean constants in && and ||
       if (e.left === true) return e.right;
       else if (e.right === true) return e.left;
@@ -138,19 +121,19 @@ const optimizers = {
     return e;
   },
   UnaryExpression(e) {
-    e.operand = optimize(e.operand);
-    if (e.operand.constructor === Number) {
+    e.left = optimize(e.left);
+    if (e.left.constructor === Number) {
       if (e.op === "-") {
-        return -e.operand;
+        return -e.left;
       }
     }
     return e;
   },
-  //   FuncCall(c) {
-  //     c.callee = optimize(c.callee);
-  //     c.args = optimize(c.args);
-  //     return c;
-  //   },
+  FuncCall(c) {
+    c.callee = optimize(c.callee);
+    c.args = optimize(c.args);
+    return c;
+  },
   BigInt(e) {
     return e;
   },
